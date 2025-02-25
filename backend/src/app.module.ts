@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecipeModule } from './recipe/recipe.module';
 import { ScraperController } from './scraper/scraper.controller';
-import { ScraperServiceService } from './scraper/scraper.service';
+import { ScraperService } from './scraper/scraper.service';
 
 @Module({
   imports: [RecipeModule],
   controllers: [AppController, ScraperController],
-  providers: [AppService, ScraperServiceService],
+  providers: [AppService, ScraperService],
 })
 export class AppModule {}
