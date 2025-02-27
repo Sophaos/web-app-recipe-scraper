@@ -46,16 +46,21 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
         instruction['@type'] === 'HowToSection' &&
         Array.isArray(instruction.itemListElement)
       ) {
-        // Case 2: HowToSection → Extract from itemListElement
+        // Case 2: HowToSection → Extract from itemListElement (only HowToStep)
         return instruction.itemListElement
           .filter(
             (step): step is { text: string } =>
-              isObject(step) && typeof step.text === 'string',
+              isObject(step) &&
+              step['@type'] === 'HowToStep' &&
+              typeof step.text === 'string',
           )
           .map((step) => step.text);
       }
 
-      if (typeof instruction.text === 'string') {
+      if (
+        instruction['@type'] === 'HowToStep' &&
+        typeof instruction.text === 'string'
+      ) {
         return [instruction.text]; // Case 3: Direct HowToStep object with text
       }
     }
