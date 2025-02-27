@@ -1,5 +1,5 @@
 import { RecipeDetails } from 'src/recipe/dto/recipe-details.dto';
-import { getString, getStringArray } from 'src/utils/object.utils';
+import { getString, getStringArray, isObject } from 'src/utils/object.utils';
 
 export function extractRecipeDetails(
   recipeSchema: Record<string, unknown>,
@@ -11,11 +11,7 @@ export function extractRecipeDetails(
     keywords: getString(recipeSchema, 'keywords'),
     image: getStringArray(recipeSchema, 'image'),
     url: getString(recipeSchema, 'url'),
-    instructions: Array.isArray(recipeSchema['recipeInstructions']) // TODO: https://www.inspiredtaste.net/18982/our-favorite-easy-blueberry-muffin-recipe/
-      ? (
-          recipeSchema['recipeInstructions'] as (string | { text: string })[]
-        ).map((i) => (typeof i === 'string' ? i : i.text))
-      : undefined,
+    instructions: extractInstructions(recipeSchema),
     prepTime: getString(recipeSchema, 'prepTime'),
     cookTime: getString(recipeSchema, 'cookTime'),
     totalTime: getString(recipeSchema, 'totalTime'),
@@ -33,4 +29,37 @@ export function extractRecipeDetails(
   };
 
   return recipeDetails;
+}
+
+function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
+  const rawInstructions = recipeSchema['recipeInstructions'];
+
+  if (!rawInstructions || !Array.isArray(rawInstructions)) return [];
+
+  return rawInstructions.flatMap((instruction) => {
+    if (typeof instruction === 'string') {
+      return [instruction]; // Case 1: Direct string instructions
+    }
+
+    if (isObject(instruction)) {
+      if (
+        instruction['@type'] === 'HowToSection' &&
+        Array.isArray(instruction.itemListElement)
+      ) {
+        // Case 2: HowToSection → Extract from itemListElement
+        return instruction.itemListElement
+          .filter(
+            (step): step is { text: string } =>
+              isObject(step) && typeof step.text === 'string',
+          )
+          .map((step) => step.text);
+      }
+
+      if (typeof instruction.text === 'string') {
+        return [instruction.text]; // Case 3: Direct HowToStep object with text
+      }
+    }
+
+    return []; // Ignore unknown structures
+  });
 }
