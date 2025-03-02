@@ -1,9 +1,13 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 
-export const AddButton = () => {
+interface AddButtonProps {
+  onClick: () => void;
+}
+
+export const AddButton = ({ onClick }: AddButtonProps) => {
   return (
-    <Button type="primary" shape="round" size="large" icon={<PlusOutlined />}>
+    <Button type="primary" shape="round" size="large" icon={<PlusOutlined />} onClick={onClick}>
       Add
     </Button>
   );
