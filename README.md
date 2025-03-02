@@ -1,6 +1,6 @@
 # Recipe Scraper
 
-A web app for scraping recipes in the web to add it to your own database.
+A web app for scraping and saving recipes in the web.
 
 <!-- <p align="center">
   <img src="https://github.com/user-attachments/assets/4d260446-9359-4398-858c-ae93f26ad309" width="45%">
@@ -21,6 +21,8 @@ I was motivated to practice React with TypeScript for the front end and to learn
 - Web Scraping
 - Playwright
 - Ant-design
+- MongoDB
+- Prisma
 
 ## What I've used
 
@@ -30,6 +32,7 @@ I was motivated to practice React with TypeScript for the front end and to learn
 - NestJS
 - react-hook-form
 - zod validation
+- tanstack/react-query
 
 ## How to run
 
