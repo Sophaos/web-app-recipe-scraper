@@ -1,4 +1,4 @@
-import { RecipeDetails } from 'src/recipe/dto/recipe-details.dto';
+import { RecipeDetails } from 'src/models/recipe-details';
 import { getString, getStringArray, isObject } from 'src/utils/object.utils';
 
 export function extractRecipeDetails(

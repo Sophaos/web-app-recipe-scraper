@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Recipe, RecipeDocument } from 'src/schemas/recipe.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class RecipeService {
-  create(createRecipeDto: CreateRecipeDto) {
-    return 'This action adds a new recipe';
-  }
+  constructor() // @InjectModel(Recipe.name) private recipeModel: Model<RecipeDocument>,
+  {}
 
   findAll() {
     return `This action returns all recipe`;
@@ -14,13 +14,5 @@ export class RecipeService {
 
   findOne(id: number) {
     return `This action returns a #${id} recipe`;
-  }
-
-  update(id: number, updateRecipeDto: UpdateRecipeDto) {
-    return `This action updates a #${id} recipe`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} recipe`;
   }
 }

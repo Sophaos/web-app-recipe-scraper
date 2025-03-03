@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { chromium } from '@playwright/test';
 import { extractJsonLd, extractSchema } from 'src/utils/jsonld.utils';
 import { extractRecipeDetails } from './scraper.helper';
-import { RecipeDetails } from 'src/recipe/dto/recipe-details.dto';
+import { RecipeDetails } from 'src/models/recipe-details';
 
 @Injectable()
 export class ScraperService {
   async scrapeRecipe(url: string): Promise<RecipeDetails | null> {
+    if (!url) {
+      return null;
+    }
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
 

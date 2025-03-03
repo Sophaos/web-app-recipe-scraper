@@ -1,23 +1,20 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+
+import { ScraperService } from 'src/scraper/scraper.service';
+import { CreateRecipeDto } from './dto/create-recipe-dto';
 import { RecipeService } from './recipe.service';
-import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { UpdateRecipeDto } from './dto/update-recipe.dto';
 
 @Controller('recipe')
 export class RecipeController {
-  constructor(private readonly recipeService: RecipeService) {}
+  constructor(
+    private readonly recipeService: RecipeService,
+    private readonly scraperService: ScraperService,
+  ) {}
 
   @Post()
   create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
+    const recipe = this.scraperService.scrapeRecipe(createRecipeDto.url);
+    return recipe;
   }
 
   @Get()
@@ -30,13 +27,8 @@ export class RecipeController {
     return this.recipeService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecipeDto: UpdateRecipeDto) {
-    return this.recipeService.update(+id, updateRecipeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.recipeService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.recipeService.remove(+id);
+  // }
 }
