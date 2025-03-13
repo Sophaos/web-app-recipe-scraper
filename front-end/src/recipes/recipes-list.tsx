@@ -2,9 +2,9 @@ import { RecipeCard } from "./recipe-card";
 
 export const RecipesList = () => {
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <div className="text-2xl font-semibold">Recipes</div>
-      <div className="inline-grid grid-cols-3 gap-4">
+      <div className="flex flex-wrap gap-3">
         <RecipeCard />
         <RecipeCard />
         <RecipeCard />

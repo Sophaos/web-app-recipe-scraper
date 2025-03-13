@@ -9,8 +9,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mysecretpassword
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
   backend:
     build: ./backend
@@ -29,7 +27,7 @@ services:
           path: package.json
   
   frontend:
-    build: ./frontend
+    build: ./front-end
     ports:
       - "5173:5173"
     depends_on:
@@ -38,7 +36,7 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./frontend
+          path: ./front-end
           target: /app
           ignore:
             - node_modules/
