@@ -1,23 +1,17 @@
-import { Button, Input, Modal } from "antd";
+import { Modal } from "antd";
+import { RecipesForm } from "../recipes/recipes-form";
 
 interface AddRecipeModalProps {
   open: boolean;
   onOk: () => void;
   onCancel: () => void;
+  isProcessing: boolean;
 }
-export const AddRecipeModal = ({ open, onOk, onCancel }: AddRecipeModalProps) => {
+
+export const AddRecipeModal = ({ open, isProcessing, onOk, onCancel }: AddRecipeModalProps) => {
   return (
-    <Modal title="Basic Modal" open={open} onOk={onOk} onCancel={onCancel} footer={null}>
-      <div className="flex flex-col gap-6">
-        <div>Add recipe from URL</div>
-        <div>
-          <div>Enter the URL of the recipe you want to save</div>
-          <Input placeholder="http://" />
-        </div>
-        <Button onClick={onOk} type="primary" shape="round">
-          Save
-        </Button>
-      </div>
+    <Modal title="Add recipe from URL" open={open} onOk={onOk} onCancel={onCancel} footer={null}>
+      <RecipesForm onSubmit={onOk} isProcessing={false} />
     </Modal>
   );
 };

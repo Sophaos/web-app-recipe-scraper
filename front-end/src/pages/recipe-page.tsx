@@ -7,9 +7,17 @@ import { RecipeNutrition } from "../recipe/recipe-nutrion";
 export const RecipePage = () => {
   return (
     <RecipeLayout>
-      <RecipeMainDisplay />
-      <RecipeIngredients />
-      <RecipeInstructions />
+      <div className="w-full">
+        <RecipeMainDisplay />
+      </div>
+      <div className="flex flex-row border-2">
+        <div className="w-1/2">
+          <RecipeIngredients />
+        </div>
+        <div className="w-1/2">
+          <RecipeInstructions />
+        </div>
+      </div>
       <RecipeNutrition />
     </RecipeLayout>
   );
