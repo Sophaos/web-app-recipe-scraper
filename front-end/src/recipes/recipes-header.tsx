@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AddRecipeModal } from "../modal/add-recipe-modal";
+import { AddRecipeModal } from "../modals/add-recipe-modal";
 import { AddButton } from "./add-button";
 
 export const RecipesHeader = () => {

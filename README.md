@@ -22,7 +22,8 @@ I was motivated to practice React with TypeScript for the front end and to learn
 - Playwright
 - Ant-design
 - MongoDB
-- Prisma
+- Mongoose
+- Ky
 
 ## What I've used
 
@@ -31,8 +32,10 @@ I was motivated to practice React with TypeScript for the front end and to learn
 - TypeScript
 - NestJS
 - react-hook-form
-- zod validation
 - tanstack/react-query
+- MongoDB
+- Mongoose
+- Ky
 
 ## How to run
 
