@@ -14,6 +14,7 @@ I was motivated to practice React with TypeScript for the front end and to learn
 ## Features
 
 - Upload a recipe from a url
+- View saved recipes
 - View a recipe
 
 ## What I've learned
