@@ -12,9 +12,12 @@ import { Recipe, RecipeSchema } from './schemas/recipe.schema';
   imports: [
     RecipeModule,
     MongooseModule.forRoot(
-      // 'mongodb://root:mysecretpassword@db:27017/recipe_db?authSource=admin',
-      'mongodb://localhost:27017/recipe_db',
+      'mongodb://root:mysecretpassword@localhost:27017/recipe_db?authSource=admin',
     ),
+    // MongooseModule.forRoot(
+    //   // 'mongodb://root:mysecretpassword@db:27017/recipe_db?authSource=admin',
+    //   'mongodb://localhost:27017/recipe_db',
+    // ),
     MongooseModule.forFeature([{ name: Recipe.name, schema: RecipeSchema }]),
   ],
   controllers: [AppController, RecipeController],

@@ -20,6 +20,7 @@ export class ScraperService {
       if (recipeSchema) {
         return extractRecipeDetails(recipeSchema);
       }
+      console.log('invalid format');
       return null;
     } catch (error) {
       console.error('Scraping failed:', error);

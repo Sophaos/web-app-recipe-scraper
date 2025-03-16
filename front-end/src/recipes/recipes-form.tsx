@@ -1,7 +1,7 @@
 import { Button, Form, FormProps, Input } from "antd";
 
 interface RecipesFormProps {
-  onSubmit: () => void;
+  onSubmit: (url: string) => void;
   isProcessing: boolean;
 }
 
@@ -13,9 +13,9 @@ export const RecipesForm = ({ onSubmit, isProcessing }: RecipesFormProps) => {
   const [form] = Form.useForm();
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+    const { url } = values;
+    onSubmit(url);
     form.resetFields();
-    onSubmit();
   };
 
   return (

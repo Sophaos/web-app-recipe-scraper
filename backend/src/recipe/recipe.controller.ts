@@ -14,7 +14,7 @@ import { CreateRecipeDto } from './dto/create-recipe-dto';
 import { RecipeService } from './recipe.service';
 import { RecipeDocument } from 'src/schemas/recipe.schema';
 
-@Controller('recipe')
+@Controller('recipes')
 export class RecipeController {
   constructor(
     private readonly recipeService: RecipeService,
@@ -25,6 +25,7 @@ export class RecipeController {
   async create(
     @Body() createRecipeDto: CreateRecipeDto,
   ): Promise<RecipeDocument> {
+    console.log(createRecipeDto, 'hi');
     const recipe = await this.scraperService.scrapeRecipe(createRecipeDto.url);
     if (!recipe) {
       throw new BadRequestException('Failed to scrape recipe');
