@@ -8,7 +8,7 @@ export const RecipesList = () => {
       <div className="text-2xl font-semibold">Recipes</div>
       <div className="flex flex-wrap gap-3">
         {/* TODO remove index and use real id */}
-        {recipes.map((r, index) => (
+        {recipes?.map((r, index) => (
           <RecipeCard key={index} />
         ))}
         {/* <RecipeCard />

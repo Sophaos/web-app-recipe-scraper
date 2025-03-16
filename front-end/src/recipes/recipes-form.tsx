@@ -1,22 +1,35 @@
 import { Button, Form, FormProps, Input } from "antd";
+import { useRecipeMutation } from "../hooks/recipe-query-hook";
 
 interface RecipesFormProps {
-  onSubmit: (url: string) => void;
-  isProcessing: boolean;
+  onSubmit: () => void;
 }
 
 type FieldType = {
   url: string;
 };
 
-export const RecipesForm = ({ onSubmit, isProcessing }: RecipesFormProps) => {
+export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
+  const { mutateAsync, status } = useRecipeMutation();
   const [form] = Form.useForm();
+
+  const handleSubmit = async (url: string) => {
+    try {
+      const res = await mutateAsync(url);
+      console.log(res);
+      onSubmit();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const { url } = values;
-    onSubmit(url);
+    handleSubmit(url);
     form.resetFields();
   };
+
+  const isProcessing = status === "pending";
 
   return (
     <Form name="basic" form={form} initialValues={{ url: "" }} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>

@@ -1,4 +1,5 @@
 import ky from "ky";
+import { Recipe } from "../models/recipe";
 
 export const api = ky.create({
   prefixUrl: "http://localhost:3000/",
@@ -7,14 +8,14 @@ export const api = ky.create({
   },
 });
 
-export const getRecipes = async () => {
-  return api.get("recipes").json();
+export const getRecipes = async (): Promise<Recipe[]> => {
+  return await api.get("recipes").json();
 };
 
-export const getRecipeById = async (id: number) => {
-  return api.get(`recipes/${id}`).json();
+export const getRecipeById = async (id: number | string): Promise<Recipe> => {
+  return await api.get(`recipes/${id}`).json();
 };
 
 export const addRecipe = async (url: string) => {
-  return api.post("recipes", { json: { url } }).json();
+  return await api.post("recipes", { json: { url } }).json();
 };
