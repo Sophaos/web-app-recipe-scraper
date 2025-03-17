@@ -9,7 +9,8 @@ export function toRecipeDTO(recipe: RecipeDocument): RecipeDTO {
     ingredients: recipe.ingredients,
     ingredientsCount: recipe.ingredients?.length ?? 0, // Derived value
     keywords: recipe.keywords,
-    image: recipe.image,
+    images: recipe.image,
+    image: recipe.image?.[0],
     url: recipe.url,
     instructions: recipe.instructions,
     prepTime: recipe.prepTime,

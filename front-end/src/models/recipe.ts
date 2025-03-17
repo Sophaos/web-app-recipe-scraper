@@ -5,7 +5,8 @@ export interface Recipe {
   ingredients?: string[];
   ingredientsCount?: number;
   keywords?: string;
-  image?: string[];
+  images?: string[];
+  image?: string;
   url?: string;
   instructions?: string[];
   prepTime?: string;

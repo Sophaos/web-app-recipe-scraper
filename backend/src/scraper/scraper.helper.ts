@@ -9,7 +9,7 @@ export function extractRecipeDetails(
     description: getString(recipeSchema, 'description'),
     ingredients: getStringArray(recipeSchema, 'recipeIngredient'),
     keywords: getString(recipeSchema, 'keywords'),
-    image: getStringArray(recipeSchema, 'image'),
+    images: getStringArray(recipeSchema, 'image'),
     url: getString(recipeSchema, 'url'),
     instructions: extractInstructions(recipeSchema),
     prepTime: getString(recipeSchema, 'prepTime'),

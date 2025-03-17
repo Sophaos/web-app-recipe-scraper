@@ -8,14 +8,8 @@ export const RecipesList = () => {
       <div className="text-2xl font-semibold">Recipes</div>
       <div className="flex flex-wrap gap-3">
         {recipes?.map((r) => (
-          <RecipeCard key={r.id} />
+          <RecipeCard key={r.id} recipe={r} />
         ))}
-        {/* <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard /> */}
       </div>
     </div>
   );
