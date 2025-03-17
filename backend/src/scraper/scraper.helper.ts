@@ -1,10 +1,10 @@
-import { RecipeDetails } from 'src/models/recipe-details';
+import { RecipeDTO } from 'src/models/recipe-dto';
 import { getString, getStringArray, isObject } from 'src/utils/object.utils';
 
 export function extractRecipeDetails(
   recipeSchema: Record<string, unknown>,
-): RecipeDetails {
-  const recipeDetails: RecipeDetails = {
+): RecipeDTO {
+  const recipeDetails: RecipeDTO = {
     name: getString(recipeSchema, 'name'),
     description: getString(recipeSchema, 'description'),
     ingredients: getStringArray(recipeSchema, 'recipeIngredient'),

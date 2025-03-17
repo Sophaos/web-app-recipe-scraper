@@ -1,7 +1,9 @@
-export interface RecipeDetails {
+export interface RecipeDTO {
+  id?: string;
   name?: string;
   description?: string;
   ingredients?: string[];
+  ingredientsCount?: number;
   keywords?: string;
   image?: string[];
   url?: string;

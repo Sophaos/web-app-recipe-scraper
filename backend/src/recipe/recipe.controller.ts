@@ -12,7 +12,7 @@ import {
 import { ScraperService } from 'src/scraper/scraper.service';
 import { CreateRecipeDto } from './dto/create-recipe-dto';
 import { RecipeService } from './recipe.service';
-import { RecipeDocument } from 'src/schemas/recipe.schema';
+import { RecipeDTO } from 'src/models/recipe-dto';
 
 @Controller('recipes')
 export class RecipeController {
@@ -22,11 +22,8 @@ export class RecipeController {
   ) {}
 
   @Post()
-  async create(
-    @Body() createRecipeDto: CreateRecipeDto,
-  ): Promise<RecipeDocument> {
-    console.log(createRecipeDto, 'hi');
-    const recipe = await this.scraperService.scrapeRecipe(createRecipeDto.url);
+  async create(@Body() createRecipeDto: CreateRecipeDto): Promise<RecipeDTO> {
+    const recipe = await this.scraperService.scrapeRecipe(createRecipeDto);
     if (!recipe) {
       throw new BadRequestException('Failed to scrape recipe');
     }
@@ -34,12 +31,12 @@ export class RecipeController {
   }
 
   @Get()
-  async findAll(): Promise<RecipeDocument[]> {
+  async findAll(): Promise<RecipeDTO[]> {
     return this.recipeService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<RecipeDocument> {
+  async findOne(@Param('id') id: string): Promise<RecipeDTO> {
     const recipe = await this.recipeService.findOne(id);
     if (!recipe) {
       throw new NotFoundException(`Recipe with ID ${id} not found`);

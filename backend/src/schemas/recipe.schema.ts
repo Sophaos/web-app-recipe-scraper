@@ -20,7 +20,7 @@ export class Recipe {
   @Prop({ type: [String] }) // Array of strings for images
   image?: string[];
 
-  @Prop()
+  @Prop({ unique: true })
   url?: string;
 
   @Prop({ type: [String] }) // Array of strings for instructions
