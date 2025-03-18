@@ -1,26 +1,27 @@
+import { decodeHTML } from 'entities';
 import { RecipeDTO } from 'src/models/recipe-dto';
 import { RecipeDocument } from 'src/schemas/recipe.schema';
-
+import { parseISO8601Duration } from 'src/utils/jsonld.utils';
 export function toRecipeDTO(recipe: RecipeDocument): RecipeDTO {
   return {
     id: recipe._id.toString(),
-    name: recipe.name,
-    description: recipe.description,
-    ingredients: recipe.ingredients,
-    ingredientsCount: recipe.ingredients?.length ?? 0, // Derived value
+    name: decodeHTML(recipe.name ?? ''),
+    description: decodeHTML(recipe.description ?? ''),
+    ingredients: recipe.ingredients?.map((i) => parseISO8601Duration(i)),
+    ingredientsCount: recipe.ingredients?.length ?? 0,
     keywords: recipe.keywords,
     images: recipe.images,
     image: recipe.images?.[0],
     url: recipe.url,
-    instructions: recipe.instructions,
-    prepTime: recipe.prepTime,
-    cookTime: recipe.cookTime,
-    totalTime: recipe.totalTime,
+    instructions: recipe.instructions?.map((i) => parseISO8601Duration(i)),
+    prepTime: parseISO8601Duration(recipe.prepTime ?? ''),
+    cookTime: parseISO8601Duration(recipe.cookTime ?? ''),
+    totalTime: parseISO8601Duration(recipe.totalTime ?? ''),
     yield: recipe.yield,
     category: recipe.category,
     cookingMethod: recipe.cookingMethod,
     cuisine: recipe.cuisine,
-    rating: recipe.rating,
+    rating: recipe.rating ?? '0',
     ratingCount: recipe.ratingCount,
     datePublished: recipe.datePublished,
   };

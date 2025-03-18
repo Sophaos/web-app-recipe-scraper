@@ -20,12 +20,16 @@ export function extractRecipeDetails(
     category: getStringArray(recipeSchema, 'recipeCategory'),
     cookingMethod: getString(recipeSchema, 'cookingMethod'),
     cuisine: getString(recipeSchema, 'recipeCuisine'),
-    rating: getString(recipeSchema, 'aggregateRating')
-      ? String(recipeSchema['aggregateRating'])
-      : undefined,
-    ratingCount: getString(recipeSchema, 'ratingCount')
-      ? String(recipeSchema['ratingCount'])
-      : undefined,
+    rating:
+      recipeSchema['aggregateRating'] &&
+      isObject(recipeSchema['aggregateRating'])
+        ? String(recipeSchema['aggregateRating']['ratingValue'])
+        : 'N/A',
+    ratingCount:
+      recipeSchema['aggregateRating'] &&
+      isObject(recipeSchema['aggregateRating'])
+        ? String(recipeSchema['aggregateRating']['ratingCount'])
+        : 'N/A',
     datePublished: getString(recipeSchema, 'datePublished'),
   };
 
@@ -39,7 +43,7 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
 
   return rawInstructions.flatMap((instruction) => {
     if (typeof instruction === 'string') {
-      return [instruction]; // Case 1: Direct string instructions
+      return [instruction];
     }
 
     if (isObject(instruction)) {
@@ -47,7 +51,6 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
         instruction['@type'] === 'HowToSection' &&
         Array.isArray(instruction.itemListElement)
       ) {
-        // Case 2: HowToSection → Extract from itemListElement (only HowToStep)
         return instruction.itemListElement
           .filter(
             (step): step is { text: string } =>
@@ -62,11 +65,11 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
         instruction['@type'] === 'HowToStep' &&
         typeof instruction.text === 'string'
       ) {
-        return [instruction.text]; // Case 3: Direct HowToStep object with text
+        return [instruction.text];
       }
     }
 
-    return []; // Ignore unknown structures
+    return [];
   });
 }
 
@@ -76,24 +79,24 @@ function extractImageUrls(recipeSchema: Record<string, unknown>): string[] {
   if (!rawImages) return [];
 
   if (typeof rawImages === 'string') {
-    return [rawImages]; // ✅ Case 1: Direct string URL
+    return [rawImages];
   }
 
   if (Array.isArray(rawImages)) {
     return rawImages
       .map((img) =>
         typeof img === 'string'
-          ? img // ✅ Case 2: Array of string URLs
+          ? img
           : isObject(img) && typeof img.url === 'string'
-            ? img.url // ✅ Case 3: Array of ImageObject(s)
+            ? img.url
             : null,
       )
       .filter((url): url is string => !!url);
   }
 
   if (isObject(rawImages) && typeof rawImages.url === 'string') {
-    return [rawImages.url]; // ✅ Case 4: Single ImageObject
+    return [rawImages.url];
   }
 
-  return []; // ❌ Unrecognized format
+  return [];
 }

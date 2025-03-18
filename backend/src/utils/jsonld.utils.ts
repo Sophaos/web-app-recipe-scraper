@@ -51,3 +51,24 @@ export function extractSchema(
 
   return null;
 }
+
+export function parseISO8601Duration(duration: string): string {
+  if (duration === undefined || duration === '') {
+    return '';
+  }
+  const match = duration.match(
+    /P(?:([\d]+)D)?T?(?:([\d]+)H)?(?:([\d]+)M)?(?:([\d]+)S)?/,
+  );
+
+  if (!match) return duration;
+
+  const [, days, hours, minutes, seconds] = match;
+  const parts = [
+    days ? `${days} day${days !== '1' ? 's' : ''}` : '',
+    hours ? `${hours} hour${hours !== '1' ? 's' : ''}` : '',
+    minutes ? `${minutes} minute${minutes !== '1' ? 's' : ''}` : '',
+    seconds ? `${seconds} second${seconds !== '1' ? 's' : ''}` : '',
+  ].filter(Boolean);
+
+  return parts.join(', ');
+}
