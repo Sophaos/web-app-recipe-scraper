@@ -23,8 +23,8 @@ export function extractSchema(
       jsonLd.find(
         (item): item is Record<string, unknown> =>
           isObject(item) &&
-          typeof item['@type'] === 'string' &&
-          item['@type'] === name,
+          ((typeof item['@type'] === 'string' && item['@type'] === name) ||
+            (Array.isArray(item['@type']) && item['@type'].includes(name))),
       ) ?? null
     );
   }
@@ -35,14 +35,19 @@ export function extractSchema(
         jsonLd['@graph'].find(
           (item): item is Record<string, unknown> =>
             isObject(item) &&
-            typeof item['@type'] === 'string' &&
-            item['@type'] === name,
+            ((typeof item['@type'] === 'string' && item['@type'] === name) ||
+              (Array.isArray(item['@type']) && item['@type'].includes(name))),
         ) ?? null
       );
     }
 
-    if (typeof jsonLd['@type'] === 'string' && jsonLd['@type'] === name) {
+    if (
+      (typeof jsonLd['@type'] === 'string' && jsonLd['@type'] === name) ||
+      (Array.isArray(jsonLd['@type']) && jsonLd['@type'].includes(name))
+    ) {
       return jsonLd;
     }
   }
+
+  return null;
 }

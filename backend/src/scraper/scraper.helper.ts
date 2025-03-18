@@ -3,14 +3,15 @@ import { getString, getStringArray, isObject } from 'src/utils/object.utils';
 
 export function extractRecipeDetails(
   recipeSchema: Record<string, unknown>,
+  url: string,
 ): Partial<RecipeDocument> {
   const recipeDetails: Partial<RecipeDocument> = {
     name: getString(recipeSchema, 'name'),
     description: getString(recipeSchema, 'description'),
     ingredients: getStringArray(recipeSchema, 'recipeIngredient'),
     keywords: getString(recipeSchema, 'keywords'),
-    images: getStringArray(recipeSchema, 'image'),
-    url: getString(recipeSchema, 'url'),
+    images: extractImageUrls(recipeSchema),
+    url,
     instructions: extractInstructions(recipeSchema),
     prepTime: getString(recipeSchema, 'prepTime'),
     cookTime: getString(recipeSchema, 'cookTime'),
@@ -67,4 +68,32 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
 
     return []; // Ignore unknown structures
   });
+}
+
+function extractImageUrls(recipeSchema: Record<string, unknown>): string[] {
+  const rawImages = recipeSchema['image'];
+
+  if (!rawImages) return [];
+
+  if (typeof rawImages === 'string') {
+    return [rawImages]; // ✅ Case 1: Direct string URL
+  }
+
+  if (Array.isArray(rawImages)) {
+    return rawImages
+      .map((img) =>
+        typeof img === 'string'
+          ? img // ✅ Case 2: Array of string URLs
+          : isObject(img) && typeof img.url === 'string'
+            ? img.url // ✅ Case 3: Array of ImageObject(s)
+            : null,
+      )
+      .filter((url): url is string => !!url);
+  }
+
+  if (isObject(rawImages) && typeof rawImages.url === 'string') {
+    return [rawImages.url]; // ✅ Case 4: Single ImageObject
+  }
+
+  return []; // ❌ Unrecognized format
 }

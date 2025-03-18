@@ -20,8 +20,9 @@ export class ScraperService {
       await page.goto(createRecipeDto.url, { waitUntil: 'domcontentloaded' });
       const jsonLd = await extractJsonLd(page);
       const recipeSchema = extractSchema(jsonLd, 'Recipe');
+
       if (recipeSchema) {
-        return extractRecipeDetails(recipeSchema);
+        return extractRecipeDetails(recipeSchema, createRecipeDto.url);
       }
       console.log('invalid format');
       return null;
