@@ -1,4 +1,4 @@
-import { Button, Form, FormProps, Input } from "antd";
+import { Button, Form, FormProps, Input, notification } from "antd";
 import { useRecipeMutation } from "../hooks/recipe-query-hook";
 
 interface RecipesFormProps {
@@ -15,9 +15,9 @@ export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
 
   const handleSubmit = async (url: string) => {
     try {
-      const res = await mutateAsync(url);
-      console.log(res);
+      await mutateAsync(url);
       onSubmit();
+      notification.success({ message: "A recipe has been added." });
     } catch (e) {
       console.error(e);
     }

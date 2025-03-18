@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { chromium } from '@playwright/test';
 import { extractJsonLd, extractSchema } from 'src/utils/jsonld.utils';
 import { extractRecipeDetails } from './scraper.helper';
-import { RecipeDTO } from 'src/models/recipe-dto';
 import { CreateRecipeDto } from 'src/recipe/dto/create-recipe-dto';
+import { RecipeDocument } from 'src/schemas/recipe.schema';
 
 @Injectable()
 export class ScraperService {
   async scrapeRecipe(
     createRecipeDto: CreateRecipeDto,
-  ): Promise<RecipeDTO | null> {
+  ): Promise<Partial<RecipeDocument> | null> {
     if (!createRecipeDto.url) {
       return null;
     }

@@ -23,7 +23,7 @@ export const useRecipeMutation = () => {
     mutationFn: addRecipe,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["posts"],
+        queryKey: ["recipes"],
       });
     },
   });

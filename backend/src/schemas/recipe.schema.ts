@@ -18,7 +18,7 @@ export class Recipe {
   keywords?: string;
 
   @Prop({ type: [String] }) // Array of strings for images
-  image?: string[];
+  images?: string[];
 
   @Prop({ unique: true })
   url?: string;
