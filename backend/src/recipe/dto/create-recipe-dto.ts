@@ -1,6 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { InputType, Field } from '@nestjs/graphql';
 
+@InputType()
 export class CreateRecipeDto {
-  @ApiProperty()
+  @Field()
   url: string;
 }

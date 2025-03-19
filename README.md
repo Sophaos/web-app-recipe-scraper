@@ -9,7 +9,7 @@ A web app for scraping and saving recipes in the web.
 
 ## Motivation
 
-I was motivated to practice React with TypeScript for the front end and to learn about Web Scraping using Playwright.
+I was motivated to learn about Web Scraping using Playwright and to learn GraphQL by using MongoDB.
 
 ## Features
 
@@ -20,15 +20,16 @@ I was motivated to practice React with TypeScript for the front end and to learn
 ## What I've learned
 
 - Web Scraping
+- GraphQL (apollo)
 - Playwright
 - Ant-design
-- MongoDB
 - Mongoose
 - Ky
 
 ## What I've used
 
 - Playwright
+- GraphQL (apollo)
 - React
 - TypeScript
 - NestJS
