@@ -1,24 +1,32 @@
+import { useParams } from "react-router";
 import { RecipeIngredients } from "../recipe/recipe-ingredients";
 import { RecipeInstructions } from "../recipe/recipe-instructions";
 import { RecipeLayout } from "../recipe/recipe-layout";
 import { RecipeMainDisplay } from "../recipe/recipe-main-display";
-import { RecipeNutrition } from "../recipe/recipe-nutrion";
+import { useRecipeQuery } from "../hooks/recipe-query-hook";
 
 export const RecipePage = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data: recipe } = useRecipeQuery(id ?? "");
+  const ingredients = recipe?.ingredients ?? [];
+  const instructions = recipe?.instructions ?? [];
+  const title = recipe?.name ?? "";
+  const description = recipe?.description ?? "";
+  const image = recipe?.image ?? "";
+
   return (
     <RecipeLayout>
-      <div className="w-full">
-        <RecipeMainDisplay />
+      <div className="w-full border-2">
+        <RecipeMainDisplay title={title} description={description} image={image} />
       </div>
       <div className="flex flex-row border-2">
         <div className="w-1/2">
-          <RecipeIngredients />
+          <RecipeIngredients ingredients={ingredients} />
         </div>
         <div className="w-1/2">
-          <RecipeInstructions />
+          <RecipeInstructions instructions={instructions} />
         </div>
       </div>
-      <RecipeNutrition />
     </RecipeLayout>
   );
 };

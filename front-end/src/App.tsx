@@ -20,7 +20,7 @@ function App() {
               }
             >
               <Route index path="recipes" element={<RecipesPage />} />
-              <Route path="recipe" element={<RecipePage />} />
+              <Route path="recipe/:id" element={<RecipePage />} />
             </Route>
             <Route path="*" element={<Navigate to="/recipes" />} />
           </Routes>

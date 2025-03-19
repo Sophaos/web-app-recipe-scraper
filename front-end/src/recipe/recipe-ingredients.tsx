@@ -1,5 +1,13 @@
-import React from "react";
+type RecipeIngredientsProps = {
+  ingredients: string[];
+};
 
-export const RecipeIngredients = () => {
-  return <div>RecipeIngredients</div>;
+export const RecipeIngredients = ({ ingredients }: RecipeIngredientsProps) => {
+  return (
+    <>
+      {ingredients.map((r) => (
+        <div>{r}</div>
+      ))}
+    </>
+  );
 };
