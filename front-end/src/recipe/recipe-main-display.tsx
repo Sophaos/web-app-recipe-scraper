@@ -1,10 +1,14 @@
+import { Tag } from "antd";
+
 type RecipeMainDisplayProps = {
   title: string;
   description: string;
   image: string;
+  categories: string[];
 };
 
-export const RecipeMainDisplay = ({ title, description, image }: RecipeMainDisplayProps) => {
+export const RecipeMainDisplay = ({ title, description, image, categories }: RecipeMainDisplayProps) => {
+  console.log(categories);
   return (
     <div className="flex w-full h-100 bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Image Section */}
@@ -12,8 +16,13 @@ export const RecipeMainDisplay = ({ title, description, image }: RecipeMainDispl
 
       {/* Content Section */}
       <div className="flex-1 p-4 flex flex-col">
-        <h2 className="text-lg font-semibold">{title}</h2>
+        <div className="text-3xl font-semibold">{title}</div>
         <p className="text-gray-600 mt-2">{description}</p>
+        <div>
+          {categories?.map((c) => (
+            <Tag key={c}>{c}</Tag>
+          ))}
+        </div>
       </div>
     </div>
   );

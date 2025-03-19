@@ -13,11 +13,12 @@ export const RecipePage = () => {
   const title = recipe?.name ?? "";
   const description = recipe?.description ?? "";
   const image = recipe?.image ?? "";
+  const categories = recipe?.category ?? [];
 
   return (
     <RecipeLayout>
       <div className="w-full border-2">
-        <RecipeMainDisplay title={title} description={description} image={image} />
+        <RecipeMainDisplay title={title} description={description} image={image} categories={categories} />
       </div>
       <div className="flex flex-row border-2">
         <div className="w-1/2">

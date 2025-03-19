@@ -7,8 +7,8 @@ type RecipeInstructionsProps = {
 export const RecipeInstructions = ({ instructions }: RecipeInstructionsProps) => {
   return (
     <>
-      {instructions.map((r) => (
-        <div>{r}</div>
+      {instructions.map((r, index) => (
+        <div key={index}>{r}</div>
       ))}
     </>
   );

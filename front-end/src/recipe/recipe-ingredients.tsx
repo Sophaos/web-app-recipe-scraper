@@ -5,8 +5,8 @@ type RecipeIngredientsProps = {
 export const RecipeIngredients = ({ ingredients }: RecipeIngredientsProps) => {
   return (
     <>
-      {ingredients.map((r) => (
-        <div>{r}</div>
+      {ingredients.map((r, index) => (
+        <div key={index}>{r}</div>
       ))}
     </>
   );
