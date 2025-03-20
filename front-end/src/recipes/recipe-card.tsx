@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { Recipe } from "../models/recipe";
-import { LikeOutlined } from "@ant-design/icons";
+import { StarFilled } from "@ant-design/icons";
 
 interface RecipeProps {
   recipe: Recipe;
@@ -21,10 +21,10 @@ export const RecipeCard = ({ recipe }: RecipeProps) => {
         <div className="absolute top-0 left-0 right-0 p-2 text-white bg-black/50">
           <div className="flex flex-row justify-between">
             <div className="flex flex-row gap-2">
-              <LikeOutlined />
+              <StarFilled />
               {rating}
             </div>
-            <div>{ratingCount} users</div>
+            <div>{ratingCount === "undefined" ? "N/A" : `${ratingCount} users`}</div>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-2 text-white bg-black/50 flex flex-row gap-2 ">
