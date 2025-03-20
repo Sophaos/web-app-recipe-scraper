@@ -2,10 +2,10 @@
 
 A web app for scraping and saving recipes in the web.
 
-<!-- <p align="center">
-  <img src="https://github.com/user-attachments/assets/4d260446-9359-4398-858c-ae93f26ad309" width="45%">
-  <img src="https://github.com/Sophaos/appointment-scheduler/assets/54873061/d105e700-fd4d-490f-b6ba-5d601d1ef985" width="45%">
-</p> -->
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/17b3b86a-c10f-473c-8d43-c2a1279a7253" width="45%">
+</p>
+
 
 ## Motivation
 
