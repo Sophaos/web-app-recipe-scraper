@@ -7,7 +7,6 @@ A web app for scraping and saving recipes in the web.
   <img src="https://github.com/user-attachments/assets/c9889a56-2863-4592-8ec1-3e4efe95eac7" width="45%">
 </p>
 
-
 ## Motivation
 
 I was motivated to learn about Web Scraping using Playwright and to learn GraphQL by using MongoDB.
@@ -25,7 +24,6 @@ I was motivated to learn about Web Scraping using Playwright and to learn GraphQ
 - Playwright
 - Ant-design
 - Mongoose
-- Ky
 
 ## What I've used
 
@@ -38,7 +36,6 @@ I was motivated to learn about Web Scraping using Playwright and to learn GraphQ
 - tanstack/react-query
 - MongoDB
 - Mongoose
-- Ky
 
 ## How to run
 
