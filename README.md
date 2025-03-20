@@ -4,6 +4,7 @@ A web app for scraping and saving recipes in the web.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/17b3b86a-c10f-473c-8d43-c2a1279a7253" width="45%">
+  <img src="https://github.com/user-attachments/assets/c9889a56-2863-4592-8ec1-3e4efe95eac7" width="45%">
 </p>
 
 
