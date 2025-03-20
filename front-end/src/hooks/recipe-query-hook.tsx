@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { addRecipe, getRecipeById, getRecipes } from "../api/recipe-api";
+import { addRecipe, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
 
 export const useRecipesQuery = (): UseQueryResult<Recipe[]> => {
@@ -12,7 +12,7 @@ export const useRecipesQuery = (): UseQueryResult<Recipe[]> => {
 export const useRecipeQuery = (id: string): UseQueryResult<Recipe> => {
   return useQuery({
     queryKey: ["recipe", id],
-    queryFn: () => getRecipeById(id),
+    queryFn: () => getRecipe(id),
     enabled: !!id,
   });
 };
