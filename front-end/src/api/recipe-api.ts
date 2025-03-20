@@ -45,7 +45,7 @@ export const getRecipe = async (id: string): Promise<Recipe> => {
 
 export const addRecipe = async (url: string): Promise<Recipe> => {
   const mutation = gql`
-    mutation CreateRecipe($data: CreateRecipeDto!) {
+    mutation createRecipe($data: CreateRecipeDto!) {
       createRecipe(data: $data) {
         id
       }

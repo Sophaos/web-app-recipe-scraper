@@ -17,14 +17,14 @@ export const RecipePage = () => {
 
   return (
     <RecipeLayout>
-      <div className="w-full border-2">
+      <div className="w-full mb-8">
         <RecipeMainDisplay title={title} description={description} image={image} categories={categories} />
       </div>
-      <div className="flex flex-row border-2">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg">
           <RecipeIngredients ingredients={ingredients} />
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg">
           <RecipeInstructions instructions={instructions} />
         </div>
       </div>

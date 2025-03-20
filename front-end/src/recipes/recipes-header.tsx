@@ -17,7 +17,7 @@ export const RecipesHeader = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-row justify-between pb-1">
       <div className="text-3xl font-semibold">Saved Recipes</div>
       <AddButton onClick={openModal} />
       <AddRecipeModal open={open} onOk={handleOk} onCancel={handleCancel} />
