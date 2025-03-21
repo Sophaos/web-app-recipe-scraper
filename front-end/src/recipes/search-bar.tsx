@@ -1,13 +1,12 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
-import { useSetAtom } from "jotai";
-import { searchTermAtom } from "../store/search-atom";
+import { useSearchHook } from "./search-hook";
 
 export const SearchBar = () => {
-  const setSearchTerm = useSetAtom(searchTermAtom);
+  const { debouncedSetSearchTerm } = useSearchHook();
   return (
     <div>
-      <Input size="large" placeholder="Search recipe" prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
+      <Input size="large" placeholder="Type to search your recipe" prefix={<SearchOutlined />} onChange={(e) => debouncedSetSearchTerm(e.target.value)} />
     </div>
   );
 };

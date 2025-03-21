@@ -4,7 +4,15 @@ import { BaseLayout } from "./layout/base-layout";
 import { RecipesPage } from "./pages/recipes-page";
 import { RecipePage } from "./pages/recipe-page";
 
-const queryClient = new QueryClient();
+const STALE_TIME = 5 * 60 * 1000; // 5 minutes
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: STALE_TIME,
+    },
+  },
+});
 
 function App() {
   return (
