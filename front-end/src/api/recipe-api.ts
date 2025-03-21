@@ -3,10 +3,10 @@ import { Recipe } from "../models/recipe";
 
 const client = new GraphQLClient("http://localhost:3000/graphql");
 
-export const getRecipes = async (): Promise<Recipe[]> => {
+export const getRecipes = async (searchTerm: string): Promise<Recipe[]> => {
   const query = gql`
-    query {
-      recipes: getRecipes {
+    query ($search: String!) {
+      recipes: getRecipes(search: $search) {
         id
         ingredientsCount
         totalTime
@@ -19,7 +19,9 @@ export const getRecipes = async (): Promise<Recipe[]> => {
     }
   `;
 
-  const { recipes } = await client.request<{ recipes: Recipe[] }>(query);
+  const variables = { search: searchTerm };
+
+  const { recipes } = await client.request<{ recipes: Recipe[] }>(query, variables);
   return recipes;
 };
 

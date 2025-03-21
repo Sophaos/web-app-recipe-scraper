@@ -1,9 +1,12 @@
 import { Alert } from "antd";
 import { useRecipesQuery } from "../hooks/recipe-query-hook";
 import { RecipeCard } from "./recipe-card";
+import { useAtomValue } from "jotai";
+import { searchTermAtom } from "../store/search-atom";
 
 export const RecipesList = () => {
-  const { data: recipes } = useRecipesQuery();
+  const searchTerm = useAtomValue(searchTermAtom);
+  const { data: recipes } = useRecipesQuery(searchTerm);
   return (
     <div className="flex flex-col gap-3">
       <div className="text-2xl font-semibold">Recipes</div>

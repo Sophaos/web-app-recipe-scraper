@@ -30,8 +30,10 @@ export class RecipeService {
     return toRecipeDTO(createdRecipe);
   }
 
-  async findAll(): Promise<RecipeDTO[]> {
-    const recipes = await this.recipeModel.find().exec();
+  async findAll(search?: string): Promise<RecipeDTO[]> {
+    const filter = search ? { name: { $regex: search, $options: 'i' } } : {};
+    const recipes = await this.recipeModel.find(filter).exec();
+
     return recipes.map((r) => toRecipeDTO(r));
   }
 

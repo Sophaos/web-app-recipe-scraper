@@ -2,10 +2,10 @@ import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack
 import { addRecipe, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
 
-export const useRecipesQuery = (): UseQueryResult<Recipe[]> => {
+export const useRecipesQuery = (searchTerm: string): UseQueryResult<Recipe[]> => {
   return useQuery({
-    queryKey: ["recipes"],
-    queryFn: getRecipes,
+    queryKey: ["recipes", searchTerm],
+    queryFn: () => getRecipes(searchTerm),
   });
 };
 

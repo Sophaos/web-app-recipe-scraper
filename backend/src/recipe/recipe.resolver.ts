@@ -25,8 +25,10 @@ export class RecipeResolver {
   }
 
   @Query(() => [RecipeDTO])
-  async getRecipes(): Promise<RecipeDTO[]> {
-    return this.recipeService.findAll();
+  async getRecipes(
+    @Args('search', { nullable: true }) search?: string,
+  ): Promise<RecipeDTO[]> {
+    return this.recipeService.findAll(search);
   }
 
   @Query(() => RecipeDTO)
