@@ -1,13 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import { useSetAtom } from "jotai";
+import { openedModalAtom } from "../store/modal-atom";
 
-interface AddButtonProps {
-  onClick: () => void;
-}
-
-export const AddButton = ({ onClick }: AddButtonProps) => {
+export const AddButton = () => {
+  const setOpenedModal = useSetAtom(openedModalAtom);
   return (
-    <Button type="primary" shape="round" size="large" icon={<PlusOutlined />} onClick={onClick}>
+    <Button type="primary" shape="round" size="large" icon={<PlusOutlined />} onClick={() => setOpenedModal(true)}>
       Add
     </Button>
   );

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BaseLayout } from "./layout/base-layout";
 import { RecipesPage } from "./pages/recipes-page";
 import { RecipePage } from "./pages/recipe-page";
+import { SnackbarProvider } from "notistack";
 
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
 
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <SnackbarProvider />
         <BrowserRouter>
           <Routes>
             <Route

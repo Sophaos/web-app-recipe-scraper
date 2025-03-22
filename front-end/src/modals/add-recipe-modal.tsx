@@ -1,15 +1,41 @@
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import { RecipesForm } from "../recipes/recipes-form";
+import { useNavigate } from "react-router";
+import { useAtom } from "jotai";
+import { openedModalAtom } from "../store/modal-atom";
+import { closeSnackbar, enqueueSnackbar } from "notistack";
 
-interface AddRecipeModalProps {
-  open: boolean;
-  onOk: () => void;
-  onCancel: () => void;
-}
+export const AddRecipeModal = () => {
+  const [open, setOpen] = useAtom(openedModalAtom);
+  const navigate = useNavigate();
 
-export const AddRecipeModal = ({ open, onOk, onCancel }: AddRecipeModalProps) => {
+  const goToRecipe = (id: string) => {
+    navigate(`/recipe/${id}`);
+  };
+
+  const onOk = (id: string) => {
+    setOpen(false);
+    enqueueSnackbar("A recipe has been added.", {
+      variant: "success",
+      action: (key) => (
+        <Button
+          onClick={() => {
+            goToRecipe(id);
+            closeSnackbar(key);
+          }}
+        >
+          View Recipe
+        </Button>
+      ),
+    });
+  };
+
+  const onCancel = () => {
+    setOpen(false);
+  };
+
   return (
-    <Modal title="Add recipe from URL" open={open} onOk={onOk} onCancel={onCancel} footer={null}>
+    <Modal title="Add recipe from URL" open={open} onOk={() => onOk} onCancel={onCancel} footer={null}>
       <RecipesForm onSubmit={onOk} />
     </Modal>
   );
