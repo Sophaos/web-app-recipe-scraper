@@ -21,7 +21,7 @@ export function toRecipeDTO(recipe: RecipeDocument): RecipeDTO {
     category: recipe.category,
     cookingMethod: recipe.cookingMethod,
     cuisine: recipe.cuisine,
-    rating: recipe.rating ?? '0',
+    rating: recipe.rating ? parseFloat(recipe.rating).toFixed(1) : 'N/A',
     ratingCount: recipe.ratingCount,
     datePublished: recipe.datePublished,
   };

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { addRecipe, getRecipe, getRecipes } from "../api/recipe-api";
+import { addRecipe, deleteRecipe, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
 
 export const useRecipesQuery = (searchTerm: string): UseQueryResult<Recipe[]> => {
@@ -17,10 +17,22 @@ export const useRecipeQuery = (id: string): UseQueryResult<Recipe> => {
   });
 };
 
-export const useRecipeMutation = () => {
+export const useAddRecipe = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: addRecipe,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["recipes"],
+      });
+    },
+  });
+};
+
+export const useDeleteRecipe = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteRecipe,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["recipes"],

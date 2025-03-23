@@ -5,6 +5,7 @@ import { ScraperService } from 'src/scraper/scraper.service';
 import { RecipeService } from './recipe.service';
 import { RecipeDTO } from 'src/models/recipe-dto';
 import { CreateRecipeDto } from './dto/create-recipe-dto';
+import { DeleteRecipeDto } from './dto/delete-recipe-dto';
 
 @Resolver(() => RecipeDTO)
 export class RecipeResolver {
@@ -40,9 +41,11 @@ export class RecipeResolver {
     return recipe;
   }
 
-  @Mutation(() => Boolean)
-  async deleteRecipe(@Args('id') id: string): Promise<boolean> {
-    const result = await this.recipeService.remove(id);
-    return result.deleted;
+  @Mutation(() => RecipeDTO)
+  async deleteRecipe(
+    @Args('data') deleteRecipeDto: DeleteRecipeDto,
+  ): Promise<RecipeDTO> {
+    const recipe = await this.recipeService.remove(deleteRecipeDto);
+    return recipe;
   }
 }

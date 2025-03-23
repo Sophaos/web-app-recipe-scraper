@@ -8,6 +8,7 @@ import { Recipe, RecipeDocument } from 'src/schemas/recipe.schema';
 import { Model } from 'mongoose';
 import { RecipeDTO } from 'src/models/recipe-dto';
 import { toRecipeDTO } from './entities/recipe.helper';
+import { DeleteRecipeDto } from './dto/delete-recipe-dto';
 
 @Injectable()
 export class RecipeService {
@@ -32,7 +33,10 @@ export class RecipeService {
 
   async findAll(search?: string): Promise<RecipeDTO[]> {
     const filter = search ? { name: { $regex: search, $options: 'i' } } : {};
-    const recipes = await this.recipeModel.find(filter).exec();
+    const recipes = await this.recipeModel
+      .find(filter)
+      .sort({ _id: -1 })
+      .exec();
 
     return recipes.map((r) => toRecipeDTO(r));
   }
@@ -45,11 +49,15 @@ export class RecipeService {
     return toRecipeDTO(recipe);
   }
 
-  async remove(id: string): Promise<{ deleted: boolean; message: string }> {
-    const result = await this.recipeModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      return { deleted: false, message: `Recipe with ID ${id} not found` };
+  async remove(deleteRecipeDto: DeleteRecipeDto): Promise<RecipeDTO> {
+    const recipe = await this.recipeModel
+      .findByIdAndDelete(deleteRecipeDto.id)
+      .exec();
+    if (!recipe) {
+      throw new NotFoundException(
+        `Recipe with ID ${deleteRecipeDto.id} not found`,
+      );
     }
-    return { deleted: true, message: 'Recipe deleted successfully' };
+    return toRecipeDTO(recipe);
   }
 }

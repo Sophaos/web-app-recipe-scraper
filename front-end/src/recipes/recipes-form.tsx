@@ -1,5 +1,5 @@
 import { Button, Form, FormProps, Input, Spin } from "antd";
-import { useRecipeMutation } from "../hooks/recipe-query-hook";
+import { useAddRecipe } from "../hooks/recipe-query-hook";
 import { enqueueSnackbar } from "notistack";
 
 interface RecipesFormProps {
@@ -11,7 +11,7 @@ type FieldType = {
 };
 
 export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
-  const { mutateAsync, status } = useRecipeMutation();
+  const { mutateAsync, status } = useAddRecipe();
   const [form] = Form.useForm();
 
   const handleSubmit = async (url: string) => {
