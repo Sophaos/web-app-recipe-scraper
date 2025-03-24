@@ -19,7 +19,8 @@ export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
       const res = await mutateAsync(url);
       onSubmit(res.id);
     } catch (e) {
-      enqueueSnackbar(`An error has occured: ${e}`, { variant: "error" });
+      enqueueSnackbar(`The schema does not follow schema.org standard.`, { variant: "error" });
+      console.error(e);
     }
   };
 
