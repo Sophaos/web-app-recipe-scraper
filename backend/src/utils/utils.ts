@@ -1,17 +1,3 @@
-import { Page } from '@playwright/test';
-import { isObject } from './object.utils';
-
-export async function extractJsonLd(page: Page) {
-  const jsonLd = await page.evaluate(() => {
-    const script = document.querySelector('script[type="application/ld+json"]');
-    if (!script || !script.textContent) return null;
-    const data = JSON.parse(script.textContent) as Record<string, unknown>;
-    return data;
-  });
-
-  return jsonLd;
-}
-
 export function extractSchema(
   jsonLd: Record<string, unknown> | null,
   name: string,
@@ -71,4 +57,22 @@ export function parseISO8601Duration(duration: string): string {
   ].filter(Boolean);
 
   return parts.join(', ');
+}
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+export function getString(
+  obj: Record<string, unknown>,
+  key: string,
+): string | undefined {
+  return typeof obj[key] === 'string' ? obj[key] : undefined;
+}
+
+export function getStringArray(
+  obj: Record<string, unknown>,
+  key: string,
+): string[] | undefined {
+  return Array.isArray(obj[key]) ? (obj[key] as string[]) : undefined;
 }

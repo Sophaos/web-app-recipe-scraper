@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Recipe, RecipeDocument } from 'src/schemas/recipe.schema';
 import { Model } from 'mongoose';
 import { RecipeDTO } from 'src/models/recipe-dto';
-import { toRecipeDTO } from './entities/recipe.helper';
+import { toRecipeDTO } from './recipe.helper';
 import { DeleteRecipeDto } from './dto/delete-recipe-dto';
 
 @Injectable()

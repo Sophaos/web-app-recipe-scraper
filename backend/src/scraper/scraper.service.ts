@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { chromium } from '@playwright/test';
-import { extractJsonLd, extractSchema } from 'src/utils/jsonld.utils';
-import { extractRecipeDetails } from './scraper.helper';
+import { extractSchema } from 'src/utils/utils';
+import { extractJsonLd, extractRecipeDetails } from './scraper.helper';
 import { CreateRecipeDto } from 'src/recipe/dto/create-recipe-dto';
 import { RecipeDocument } from 'src/schemas/recipe.schema';
 

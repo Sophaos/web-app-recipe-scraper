@@ -1,5 +1,17 @@
 import { RecipeDocument } from 'src/schemas/recipe.schema';
-import { getString, getStringArray, isObject } from 'src/utils/object.utils';
+import { getString, getStringArray, isObject } from 'src/utils/utils';
+import { Page } from '@playwright/test';
+
+export async function extractJsonLd(page: Page) {
+  const jsonLd = await page.evaluate(() => {
+    const script = document.querySelector('script[type="application/ld+json"]');
+    if (!script || !script.textContent) return null;
+    const data = JSON.parse(script.textContent) as Record<string, unknown>;
+    return data;
+  });
+
+  return jsonLd;
+}
 
 export function extractRecipeDetails(
   recipeSchema: Record<string, unknown>,
