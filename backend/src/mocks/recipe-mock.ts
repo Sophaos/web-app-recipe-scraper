@@ -217,3 +217,49 @@ export const ARRAY_RECIPE = [
     },
   },
 ];
+
+export const RECIPE_SCHEMA_MOCK = ARRAY_RECIPE[0];
+
+export const RECIPE_URL =
+  'https://www.simplyrecipes.com/recipes/cranberry_sauce/';
+
+export const RECIPE_DOCUMENT_MOCK = {
+  name: 'Cranberry Sauce',
+  description:
+    'This homemade cranberry sauce is classic. Made from fresh or frozen cranberries and ready in 20 minutes, it&#39;s a must-have for Thanksgiving dinner. Easy to make-ahead, too.',
+  ingredients: [
+    '1 cup (200 g) sugar',
+    '1 cup (250 ml) water',
+    '4 cups (12 oz package) fresh or frozen cranberries',
+    'Optional: Pecans, orange zest, raisins, currants, blueberries, cinnamon, nutmeg, allspice.',
+  ],
+  keywords:
+    'Condiment, Quick and Easy, Sauce, Cranberry, Thanksgiving, American, Gluten-Free, Vegan, Vegetarian, Side Dish, Christmas, Favorite Fall, Holiday',
+  images: [
+    'https://www.simplyrecipes.com/thmb/Z0kqQP4sTHUJcHqlGP_8eTufU7c=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Cranberry-Sauce-Lead-Shot-Seo-1b-904f543819fb47deaa0f5d5345c9b74b.jpg',
+  ],
+  url: 'https://www.simplyrecipes.com/recipes/cranberry_sauce/',
+  instructions: [
+    'Rinse the cranberries: Place the cranberries in a colander and rinse them. Pick out and discard any damaged or bruised cranberries.',
+    'Boil the water with sugar: Put the water and sugar in a medium saucepan on high heat and bring to a boil. Stir to dissolve the sugar.',
+    'Add the cranberries, cook until they burst: Add the cranberries to the pot and return to a boil. Lower the heat and simmer for 10 minutes or until most of the cranberries have burst.',
+    'Stir in the mix-ins, if using: Once the cranberries have burst you can leave the cranberry sauce as is, or dress it up with other ingredients. We like to mix in a half a cup of chopped pecans a pinch or two of orange zest. Some people like adding raisins or currants, or even blueberries for added sweetness. You can also add holiday spices such as cinnamon, nutmeg, or allspice. If adding spices, start with a pinch of each and add more to your taste.',
+    'Cool: Remove the pot from heat. Let cool completely at room temperature, then transfer to a bowl to chill in the refrigerator. Note that the cranberry sauce will continue to thicken as it cools. Did you make the recipe with any special twists? Tell us about it and leave a comment below!',
+  ],
+  prepTime: 'PT5M',
+  cookTime: 'PT15M',
+  totalTime: 'PT20M',
+  yield: ['9', '2 1/4 cups'],
+  category: [
+    'Side Dish',
+    'Condiment',
+    'Quick and Easy',
+    'Sauce',
+    'Cranberry',
+    'Sauce',
+    'Thanksgiving',
+  ],
+  rating: '4.9',
+  ratingCount: '71',
+  datePublished: '2005-11-19T19:00:00.000-05:00',
+};

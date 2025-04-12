@@ -48,7 +48,9 @@ export function extractRecipeDetails(
   return recipeDetails;
 }
 
-function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
+export function extractInstructions(
+  recipeSchema: Record<string, unknown>,
+): string[] {
   const rawInstructions = recipeSchema['recipeInstructions'];
 
   if (!rawInstructions || !Array.isArray(rawInstructions)) return [];
@@ -85,7 +87,9 @@ function extractInstructions(recipeSchema: Record<string, unknown>): string[] {
   });
 }
 
-function extractImageUrls(recipeSchema: Record<string, unknown>): string[] {
+export function extractImageUrls(
+  recipeSchema: Record<string, unknown>,
+): string[] {
   const rawImages = recipeSchema['image'];
 
   if (!rawImages) return [];

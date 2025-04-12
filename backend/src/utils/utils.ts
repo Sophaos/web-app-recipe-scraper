@@ -1,5 +1,5 @@
 export function extractSchema(
-  jsonLd: Record<string, unknown> | null,
+  jsonLd: Record<string, unknown> | Record<string, unknown>[] | null,
   name: string,
 ) {
   if (!jsonLd) return null;
