@@ -1,7 +1,7 @@
 import {
   RECIPE_INSTRUCTIONS_MOCK,
   RECIPE_INSTRUCTIONS_RES_MOCK,
-} from 'src/mocks/recipe-instructions-mock';
+} from 'src/mocks/recipe-instructions.mock';
 import {
   extractImageUrls,
   extractInstructions,

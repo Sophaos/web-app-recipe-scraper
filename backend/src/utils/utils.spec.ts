@@ -1,5 +1,5 @@
 // utils.spec.ts
-import { RECIPE_INGREDIENTS_MOCK } from 'src/mocks/recipe-ingredients-mock';
+import { RECIPE_INGREDIENTS_MOCK } from 'src/mocks/recipe-ingredients.mock';
 import {
   extractSchema,
   parseISO8601Duration,
