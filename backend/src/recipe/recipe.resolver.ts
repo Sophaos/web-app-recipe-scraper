@@ -1,9 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ScraperService } from 'src/scraper/scraper.service';
 import { RecipeService } from './recipe.service';
-import { RecipeDTO } from 'src/models/recipe-dto';
-import { CreateRecipeDto } from './dto/create-recipe-dto';
-import { DeleteRecipeDto } from './dto/delete-recipe-dto';
+import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
+import { CreateRecipeDto } from './dto/create-recipe.dto';
+import { DeleteRecipeDto } from './dto/delete-recipe.dto';
 
 @Resolver(() => RecipeDTO)
 export class RecipeResolver {

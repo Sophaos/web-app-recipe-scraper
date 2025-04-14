@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { RecipeModule } from './recipe/recipe.module';
 import { ScraperService } from './scraper/scraper.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -25,6 +24,6 @@ const mongoUri = isDocker
       sortSchema: true, // Optional, keeps schema organized
     }),
   ],
-  providers: [AppService, ScraperService, RecipeService, RecipeResolver],
+  providers: [ScraperService, RecipeService, RecipeResolver],
 })
 export class AppModule {}

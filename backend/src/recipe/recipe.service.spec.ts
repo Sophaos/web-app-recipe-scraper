@@ -8,7 +8,7 @@ import {
   StartedMongoDBContainer,
 } from '@testcontainers/mongodb';
 import { RECIPES_DOCUMENT_MOCK } from 'src/mocks/recipes-document.mock';
-import { RECIPE_DTO_MOCK } from 'src/mocks/recipe-mock';
+import { RECIPE_DTO_MOCK } from 'src/mocks/recipe.mock';
 import { ConflictException } from '@nestjs/common';
 
 describe('RecipeService', () => {

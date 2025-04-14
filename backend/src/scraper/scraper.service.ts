@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { chromium } from '@playwright/test';
 import { extractSchema } from 'src/utils/utils';
 import { extractJsonLd, extractRecipeDetails } from './scraper.helper';
-import { CreateRecipeDto } from 'src/recipe/dto/create-recipe-dto';
+import { CreateRecipeDto } from 'src/recipe/dto/create-recipe.dto';
 import { RecipeDocument } from 'src/recipe/recipe.schema';
 
 @Injectable()

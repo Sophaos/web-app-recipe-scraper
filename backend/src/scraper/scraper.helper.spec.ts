@@ -11,7 +11,7 @@ import {
   RECIPE_DOCUMENT_MOCK,
   RECIPE_SCHEMA_MOCK,
   RECIPE_URL,
-} from 'src/mocks/recipe-mock';
+} from 'src/mocks/recipe.mock';
 
 describe('extractInstructions', () => {
   it('should return [] if recipeInstructions is missing', () => {

@@ -1,5 +1,5 @@
 import { decodeHTML } from 'entities';
-import { RecipeDTO } from 'src/models/recipe-dto';
+import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
 import { RecipeDocument } from 'src/recipe/recipe.schema';
 import { parseISO8601Duration } from 'src/utils/utils';
 export function toRecipeDTO(recipe: RecipeDocument): RecipeDTO {

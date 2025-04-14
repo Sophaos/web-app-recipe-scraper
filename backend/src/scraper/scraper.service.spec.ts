@@ -30,8 +30,8 @@ jest.mock('src/scraper/scraper.helper', () => {
 import { extractJsonLd } from 'src/scraper/scraper.helper';
 import { ScraperService } from './scraper.service';
 import { Test } from '@nestjs/testing';
-import { CreateRecipeDto } from 'src/recipe/dto/create-recipe-dto';
-import { RECIPE_SCHEMA_MOCK } from 'src/mocks/recipe-mock';
+import { CreateRecipeDto } from 'src/recipe/dto/create-recipe.dto';
+import { RECIPE_SCHEMA_MOCK } from 'src/mocks/recipe.mock';
 import { RECIPE_INGREDIENTS_MOCK } from '../mocks/recipe-ingredients.mock';
 
 describe('ScraperService', () => {

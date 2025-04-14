@@ -7,7 +7,7 @@ import {
   getString,
   getStringArray,
 } from './utils';
-import { ARRAY_RECIPE, RECIPE_SCHEMA_MOCK } from 'src/mocks/recipe-mock';
+import { ARRAY_RECIPE, RECIPE_SCHEMA_MOCK } from 'src/mocks/recipe.mock';
 
 describe('extractSchema', () => {
   it('should return a recipe if its an array that acontains type Recipe', () => {
