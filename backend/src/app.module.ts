@@ -4,7 +4,7 @@ import { RecipeModule } from './recipe/recipe.module';
 import { ScraperService } from './scraper/scraper.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RecipeService } from './recipe/recipe.service';
-import { Recipe, RecipeSchema } from './schemas/recipe.schema';
+import { Recipe, RecipeSchema } from './recipe/recipe.schema';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RecipeResolver } from './recipe/recipe.resolver';

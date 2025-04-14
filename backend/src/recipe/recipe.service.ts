@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Recipe, RecipeDocument } from 'src/schemas/recipe.schema';
+import { Recipe, RecipeDocument } from 'src/recipe/recipe.schema';
 import { Model } from 'mongoose';
 import { RecipeDTO } from 'src/models/recipe-dto';
 import { toRecipeDTO } from './recipe.helper';

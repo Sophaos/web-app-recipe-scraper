@@ -1,4 +1,4 @@
-import { RecipeDocument } from 'src/schemas/recipe.schema';
+import { RecipeDocument } from 'src/recipe/recipe.schema';
 import { getString, getStringArray, isObject } from 'src/utils/utils';
 import { Page } from '@playwright/test';
 

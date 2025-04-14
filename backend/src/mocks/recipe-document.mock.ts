@@ -1,4 +1,4 @@
-import { RecipeDocument } from 'src/schemas/recipe.schema';
+import { RecipeDocument } from 'src/recipe/recipe.schema';
 
 export const RECIPE_DOCUMENT_DAO_MOCK: Partial<RecipeDocument> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

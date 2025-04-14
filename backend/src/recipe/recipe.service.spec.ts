@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecipeService } from './recipe.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Recipe, RecipeSchema } from 'src/schemas/recipe.schema';
+import { Recipe, RecipeSchema } from 'src/recipe/recipe.schema';
 import mongoose, { Connection, Model } from 'mongoose';
 import {
   MongoDBContainer,
