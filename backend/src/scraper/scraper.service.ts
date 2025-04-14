@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { chromium } from '@playwright/test';
 import { extractSchema } from 'src/utils/utils';
 import { extractJsonLd, extractRecipeDetails } from './scraper.helper';
@@ -9,25 +9,31 @@ import { RecipeDocument } from 'src/schemas/recipe.schema';
 export class ScraperService {
   async scrapeRecipe(
     createRecipeDto: CreateRecipeDto,
-  ): Promise<Partial<RecipeDocument> | null> {
+  ): Promise<Partial<RecipeDocument>> {
     if (!createRecipeDto.url) {
-      return null;
+      throw new BadRequestException('URL is required to scrape recipe');
     }
+
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
 
     try {
       await page.goto(createRecipeDto.url, { waitUntil: 'domcontentloaded' });
+
       const jsonLd = await extractJsonLd(page);
       const recipeSchema = extractSchema(jsonLd, 'Recipe');
+
       if (recipeSchema) {
         return extractRecipeDetails(recipeSchema, createRecipeDto.url);
       }
-      console.log('invalid format');
-      return null;
+
+      throw new BadRequestException('Invalid recipe schema format');
     } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error; // rethrow custom error
+      }
       console.error('Scraping failed:', error);
-      return null;
+      throw new BadRequestException('Failed to scrape recipe');
     } finally {
       await browser.close();
     }

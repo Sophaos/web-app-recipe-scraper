@@ -11,7 +11,7 @@ import { RECIPES_DOCUMENT_MOCK } from 'src/mocks/recipes-document.mock';
 import { RECIPE_DTO_MOCK } from 'src/mocks/recipe-mock';
 import { ConflictException } from '@nestjs/common';
 
-describe('RecipeService (Integration)', () => {
+describe('RecipeService', () => {
   jest.setTimeout(60000);
   let service: RecipeService;
   let mongoContainer: StartedMongoDBContainer;
