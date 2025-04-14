@@ -27,6 +27,7 @@ I was motivated to learn about Web Scraping using Playwright, GraphQL by using M
 - Mongoose
 - Jotai
 - Jest
+- testcontainers
 
 ## What I've used
 
@@ -41,6 +42,7 @@ I was motivated to learn about Web Scraping using Playwright, GraphQL by using M
 - Mongoose
 - Jotai
 - Jest
+- testcontainers
 
 ## How to run
 
