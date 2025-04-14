@@ -9,12 +9,15 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RecipeResolver } from './recipe/recipe.resolver';
 
+const isDocker = process.env.DOCKER === 'true';
+const mongoUri = isDocker
+  ? 'mongodb://root:mysecretpassword@db:27017/recipe_db?authSource=admin'
+  : 'mongodb://root:mysecretpassword@localhost:27017/recipe_db?authSource=admin';
+
 @Module({
   imports: [
     RecipeModule,
-    MongooseModule.forRoot(
-      'mongodb://root:mysecretpassword@localhost:27017/recipe_db?authSource=admin',
-    ),
+    MongooseModule.forRoot(mongoUri),
     MongooseModule.forFeature([{ name: Recipe.name, schema: RecipeSchema }]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
