@@ -7,6 +7,9 @@ import { Recipe, RecipeSchema } from './recipe/recipe.schema';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RecipeResolver } from './recipe/recipe.resolver';
+import { CollectionService } from './collection/collection.service';
+import { CollectionResolver } from './collection/collection.resolver';
+import { Collection, CollectionSchema } from './collection/collection.schema';
 
 const isDocker = process.env.DOCKER === 'true';
 const mongoUri = isDocker
@@ -17,13 +20,22 @@ const mongoUri = isDocker
   imports: [
     RecipeModule,
     MongooseModule.forRoot(mongoUri),
-    MongooseModule.forFeature([{ name: Recipe.name, schema: RecipeSchema }]),
+    MongooseModule.forFeature([
+      { name: Recipe.name, schema: RecipeSchema },
+      { name: Collection.name, schema: CollectionSchema },
+    ]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true, // Optional, keeps schema organized
     }),
   ],
-  providers: [ScraperService, RecipeService, RecipeResolver],
+  providers: [
+    ScraperService,
+    RecipeService,
+    RecipeResolver,
+    CollectionService,
+    CollectionResolver,
+  ],
 })
 export class AppModule {}
