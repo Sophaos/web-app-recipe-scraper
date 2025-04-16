@@ -1,7 +1,7 @@
-import { RECIPE_DOCUMENT_DAO_MOCK } from 'src/mocks/recipe-document.mock';
+import { RECIPE_DOCUMENT_DAO_MOCK } from 'src/recipe/mocks/recipe-document.mock';
 import { toRecipeDTO } from './recipe.helper';
 import { RecipeDocument } from 'src/recipe/recipe.schema';
-import { RECIPE_DTO_MOCK } from 'src/mocks/recipe.mock';
+import { RECIPE_DTO_MOCK } from 'src/recipe/mocks/recipe.mock';
 
 describe('toRecipeDTO', () => {
   it('should properly convert a recipe document to a DTO', () => {

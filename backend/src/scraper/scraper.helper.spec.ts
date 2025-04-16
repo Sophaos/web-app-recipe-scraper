@@ -1,7 +1,7 @@
 import {
   RECIPE_INSTRUCTIONS_MOCK,
   RECIPE_INSTRUCTIONS_RES_MOCK,
-} from 'src/mocks/recipe-instructions.mock';
+} from 'src/recipe/mocks/recipe-instructions.mock';
 import {
   extractImageUrls,
   extractInstructions,
@@ -11,7 +11,7 @@ import {
   RECIPE_DOCUMENT_MOCK,
   RECIPE_SCHEMA_MOCK,
   RECIPE_URL,
-} from 'src/mocks/recipe.mock';
+} from 'src/recipe/mocks/recipe.mock';
 
 describe('extractInstructions', () => {
   it('should return [] if recipeInstructions is missing', () => {

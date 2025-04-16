@@ -4,4 +4,7 @@ import { InputType, Field } from '@nestjs/graphql';
 export class AddToCollectionDto {
   @Field()
   id: string;
+
+  @Field()
+  recipeId: string;
 }

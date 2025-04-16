@@ -2,6 +2,9 @@ import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateCollectionDto {
+  @Field()
+  id: string;
+
   @Field({ nullable: true })
   name?: string;
 

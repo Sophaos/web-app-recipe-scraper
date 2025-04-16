@@ -13,7 +13,7 @@ export class Collection {
 
   @Prop()
   @Field({ nullable: true })
-  name?: string;
+  name: string;
 
   @Prop()
   @Field({ nullable: true })

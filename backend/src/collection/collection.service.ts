@@ -25,17 +25,37 @@ export class CollectionService {
   async updateCollection(
     updateCollectionDto: UpdateCollectionDto,
   ): Promise<CollectionDTO> {
-    const collectionToCreate = new this.collectionModel(updateCollectionDto);
-    const createdCollection = await collectionToCreate.save();
-    return toCollectionDTO(createdCollection);
+    const updatedCollection = await this.collectionModel.findByIdAndUpdate(
+      updateCollectionDto.id,
+      updateCollectionDto,
+      { new: true },
+    );
+
+    if (!updatedCollection) {
+      throw new Error('Collection not found');
+    }
+
+    return toCollectionDTO(updatedCollection);
   }
 
   async addToCollection(
     addToCollectionDto: AddToCollectionDto,
   ): Promise<CollectionDTO> {
-    const collectionToCreate = new this.collectionModel(addToCollectionDto);
-    const createdCollection = await collectionToCreate.save();
-    return toCollectionDTO(createdCollection);
+    const updatedCollection = await this.collectionModel.findByIdAndUpdate(
+      addToCollectionDto.id,
+      {
+        $push: {
+          items: { $each: addToCollectionDto.recipeId },
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedCollection) {
+      throw new Error('Collection not found');
+    }
+
+    return toCollectionDTO(updatedCollection);
   }
 
   async findAll(search?: string): Promise<CollectionDTO[]> {

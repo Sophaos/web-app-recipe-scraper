@@ -1,5 +1,5 @@
 // utils.spec.ts
-import { RECIPE_INGREDIENTS_MOCK } from 'src/mocks/recipe-ingredients.mock';
+import { RECIPE_INGREDIENTS_MOCK } from 'src/recipe/mocks/recipe-ingredients.mock';
 import {
   extractSchema,
   parseISO8601Duration,
@@ -7,7 +7,7 @@ import {
   getString,
   getStringArray,
 } from './utils';
-import { ARRAY_RECIPE, RECIPE_SCHEMA_MOCK } from 'src/mocks/recipe.mock';
+import { ARRAY_RECIPE, RECIPE_SCHEMA_MOCK } from 'src/recipe/mocks/recipe.mock';
 
 describe('extractSchema', () => {
   it('should return a recipe if its an array that acontains type Recipe', () => {
