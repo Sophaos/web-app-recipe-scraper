@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CollectionService } from './collection.service';
-import { ScraperService } from 'src/scraper/scraper.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Collection, CollectionSchema } from 'src/collection/collection.schema';
+import { RecipeService } from 'src/recipe/recipe.service';
 
 @Module({
   imports: [
@@ -10,6 +10,6 @@ import { Collection, CollectionSchema } from 'src/collection/collection.schema';
       { name: Collection.name, schema: CollectionSchema },
     ]),
   ],
-  providers: [CollectionService, ScraperService],
+  providers: [CollectionService, RecipeService],
 })
 export class CollectionModule {}

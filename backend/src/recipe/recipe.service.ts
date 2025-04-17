@@ -42,10 +42,7 @@ export class RecipeService {
   }
 
   async findOne(id: string): Promise<RecipeDTO> {
-    const recipe = await this.recipeModel.findById(id).exec();
-    if (!recipe) {
-      throw new NotFoundException(`Recipe with ID ${id} not found`);
-    }
+    const recipe = await this.findOneRaw(id);
     return toRecipeDTO(recipe);
   }
 
@@ -59,5 +56,13 @@ export class RecipeService {
       );
     }
     return toRecipeDTO(recipe);
+  }
+
+  async findOneRaw(id: string): Promise<RecipeDocument> {
+    const recipe = await this.recipeModel.findById(id).exec();
+    if (!recipe) {
+      throw new NotFoundException(`Recipe with ID ${id} not found`);
+    }
+    return recipe;
   }
 }

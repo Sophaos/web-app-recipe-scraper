@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Recipe } from 'src/recipe/recipe.schema';
 
@@ -19,7 +19,7 @@ export class Collection {
   @Field({ nullable: true })
   description?: string;
 
-  @Prop({ type: [Recipe] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }] })
   @Field(() => [Recipe], { nullable: 'itemsAndList' })
   recipes?: Recipe[];
 }
