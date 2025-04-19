@@ -1,12 +1,12 @@
 import { Button, Modal } from "antd";
-import { RecipesForm } from "../recipes/recipes-form";
 import { useNavigate } from "react-router";
 import { useAtom } from "jotai";
-import { openedRecipeModalAtom } from "../store/modal-atom";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
+import { openedCollectionModalAtom } from "../store/modal-atom";
+import { CollectionsForm } from "../collection/collection-form";
 
-export const AddRecipeModal = () => {
-  const [open, setOpen] = useAtom(openedRecipeModalAtom);
+export const CollectionModal = () => {
+  const [open, setOpen] = useAtom(openedCollectionModalAtom);
   const navigate = useNavigate();
 
   const goToRecipe = (id: string) => {
@@ -35,8 +35,8 @@ export const AddRecipeModal = () => {
   };
 
   return (
-    <Modal title="Add recipe from URL" open={open} onOk={() => onOk} onCancel={onCancel} footer={null}>
-      <RecipesForm onSubmit={onOk} />
+    <Modal title="Add Collection" open={open} onOk={() => onOk} onCancel={onCancel} footer={null}>
+      <CollectionsForm onSubmit={onOk} />
     </Modal>
   );
 };

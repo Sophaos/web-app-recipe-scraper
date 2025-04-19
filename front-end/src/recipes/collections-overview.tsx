@@ -11,12 +11,17 @@ export const CollectionsOverview = () => {
           See all
         </Button>
       </div>
-      <div className="flex flex-row gap-1">
-        <AddCollectionCard />
-        <CollectionsOverviewCard />
-        <CollectionsOverviewCard />
-        <CollectionsOverviewCard />
-        <CollectionsOverviewCard />
+      <div className="overflow-x-auto">
+        <div className="flex flex-row gap-1 min-w-max">
+          <AddCollectionCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+          <CollectionsOverviewCard />
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
 import { atom } from "jotai";
 
-export const openedModalAtom = atom(false);
+export const openedRecipeModalAtom = atom(false);
+export const openedCollectionModalAtom = atom(false);

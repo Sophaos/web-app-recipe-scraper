@@ -1,9 +1,9 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { useSetAtom } from "jotai";
-import { openedModalAtom } from "../store/modal-atom";
+import { openedRecipeModalAtom } from "../store/modal-atom";
 
 export const AddRecipeCard = () => {
-  const setOpenedModal = useSetAtom(openedModalAtom);
+  const setOpenedModal = useSetAtom(openedRecipeModalAtom);
   const handleOpen = () => {
     setOpenedModal(true);
   };
