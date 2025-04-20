@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { addRecipe, deleteRecipe, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
+import { CreateCollectionRequest } from "../api/collection-requests";
+import { createCollection } from "../api/collection-api";
 
 export const useCollectionsQuery = (searchTerm: string): UseQueryResult<Recipe[]> => {
   return useQuery({
@@ -20,7 +22,7 @@ export const useCollectionQuery = (id: string): UseQueryResult<Recipe> => {
 export const useCreateCollection = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: addRecipe,
+    mutationFn: (data: CreateCollectionRequest) => createCollection(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["collections"],

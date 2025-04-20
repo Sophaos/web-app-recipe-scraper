@@ -21,7 +21,10 @@ export const RecipesList = () => {
           ))}
         </div>
       ) : (
-        <Alert message="No recipes found. Please add new recipes." type="warning" showIcon />
+        <>
+          <Alert message="No recipes found. Please add new recipes." type="warning" showIcon />
+          <AddRecipeCard />
+        </>
       )}
     </div>
   );

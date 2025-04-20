@@ -30,7 +30,7 @@ export class Recipe {
   @Field(() => [String], { nullable: 'itemsAndList' })
   images?: string[];
 
-  @Prop({ unique: true })
+  @Prop()
   @Field({ nullable: true })
   url?: string;
 

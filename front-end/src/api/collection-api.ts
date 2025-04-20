@@ -1,106 +1,96 @@
 import { gql } from "graphql-request";
 import { Collection } from "../models/collection";
 import { client } from "./api-const";
+import { AddToCollectionRequest, CreateCollectionRequest, DeleteCollectionRequest, GetCollectionRequest, UpdateCollectionRequest } from "./collection-requests";
 
-export const getCollections = async (searchTerm: string): Promise<Collection[]> => {
+export const getCollections = async (): Promise<Collection[]> => {
   const query = gql`
-    query ($search: String!) {
-      collections: getCollections(search: $search) {
+    query {
+      getCollections {
         id
-        ingredientsCount
-        totalTime
         name
         image
         rating
         url
-        ratingCount
+        ingredientsCount
+        totalTime
       }
     }
   `;
 
-  const variables = { search: searchTerm };
-
-  const { collections } = await client.request<{ collections: Collection[] }>(query, variables);
-  return collections;
+  const { getCollections } = await client.request<{ getCollections: Collection[] }>(query);
+  return getCollections;
 };
 
-export const getCollection = async (id: string): Promise<Collection> => {
+export const getCollection = async (data: GetCollectionRequest): Promise<Collection> => {
   const query = gql`
     query getCollection($id: String!) {
       getCollection(id: $id) {
         id
         name
         ingredients
-        instructions
-        image
-        description
-        category
+        recipes
       }
     }
   `;
-
-  const variables = { id };
-  const { getCollection } = await client.request<{ getCollection: Collection }>(query, variables);
+  const { getCollection } = await client.request<{ getCollection: Collection }>(query, data);
   return getCollection;
 };
 
-export const CreateCollection = async (url: string): Promise<Collection> => {
+export const createCollection = async (data: CreateCollectionRequest): Promise<Collection> => {
   const mutation = gql`
     mutation createCollection($data: CreateCollectionDto!) {
       createCollection(data: $data) {
         id
+        name
+        description
       }
     }
   `;
 
-  const variables = { data: { url } };
-
-  const { createCollection } = await client.request<{ createCollection: Collection }>(mutation, variables);
+  const { createCollection } = await client.request<{ createCollection: Collection }>(mutation, { data });
   return createCollection;
 };
 
-export const UpdateCollection = async (url: string): Promise<Collection> => {
+export const UpdateCollection = async (data: UpdateCollectionRequest): Promise<Collection> => {
   const mutation = gql`
-    mutation updateCollection($data: CreateCollectionDto!) {
+    mutation updateCollection($data: UpdateCollectionDto!) {
       updateCollection(data: $data) {
         id
+        name
+        description
       }
     }
   `;
 
-  const variables = { data: { url } };
-
-  const { createCollection } = await client.request<{ createCollection: Collection }>(mutation, variables);
-  return createCollection;
+  const { updateCollection } = await client.request<{ updateCollection: Collection }>(mutation, data);
+  return updateCollection;
 };
 
-export const addToCollection = async (url: string): Promise<Collection> => {
+export const addToCollection = async (data: AddToCollectionRequest): Promise<Collection> => {
   const mutation = gql`
-    mutation addToCollection($data: CreateCollectionDto!) {
-      createCollection(data: $data) {
+    mutation addToCollection($data: AddToCollectionDto!) {
+      addToCollection(data: $data) {
         id
+        name
+        ingredientsCount
       }
     }
   `;
 
-  const variables = { data: { url } };
-
-  const { createCollection } = await client.request<{ createCollection: Collection }>(mutation, variables);
-  return createCollection;
+  const { addToCollection } = await client.request<{ addToCollection: Collection }>(mutation, data);
+  return addToCollection;
 };
 
-export const deleteCollection = async (id: string): Promise<Collection> => {
+export const deleteCollection = async (data: DeleteCollectionRequest): Promise<Collection> => {
   const mutation = gql`
     mutation deleteCollection($data: DeleteCollectionDto!) {
       deleteCollection(data: $data) {
         id
-        name
       }
     }
   `;
 
-  const variables = { data: { id } };
-
-  const { deleteCollection } = await client.request<{ deleteCollection: Collection }>(mutation, variables);
+  const { deleteCollection } = await client.request<{ deleteCollection: Collection }>(mutation, data);
   return deleteCollection;
 };

@@ -9,7 +9,6 @@ import {
 } from '@testcontainers/mongodb';
 import { RECIPES_DOCUMENT_MOCK } from 'src/recipe/mocks/recipes-document.mock';
 import { RECIPE_DTO_MOCK } from 'src/recipe/mocks/recipe.mock';
-import { ConflictException } from '@nestjs/common';
 
 describe('RecipeService', () => {
   jest.setTimeout(60000);
@@ -61,15 +60,6 @@ describe('RecipeService', () => {
       const found = await recipeModel.findById(created.id);
       expect(found).not.toBeNull();
       expect(found?.name).toEqual(recipeWithoutId.name);
-    });
-
-    it('should not create a recipe and fail if it already exists', async () => {
-      await recipeModel.insertOne(RECIPES_DOCUMENT_MOCK[0]);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id: _, ...recipeWithoutId } = RECIPE_DTO_MOCK;
-      await expect(service.create(recipeWithoutId)).rejects.toThrow(
-        ConflictException,
-      );
     });
   });
 

@@ -9,22 +9,22 @@ export const CollectionModal = () => {
   const [open, setOpen] = useAtom(openedCollectionModalAtom);
   const navigate = useNavigate();
 
-  const goToRecipe = (id: string) => {
+  const goToCollection = (id: string) => {
     navigate(`/recipe/${id}`);
   };
 
   const onOk = (id: string) => {
     setOpen(false);
-    enqueueSnackbar("A recipe has been added.", {
+    enqueueSnackbar("A collection has been added.", {
       variant: "success",
       action: (key) => (
         <Button
           onClick={() => {
-            goToRecipe(id);
+            goToCollection(id);
             closeSnackbar(key);
           }}
         >
-          View Recipe
+          View Collection
         </Button>
       ),
     });
@@ -35,7 +35,7 @@ export const CollectionModal = () => {
   };
 
   return (
-    <Modal title="Add Collection" open={open} onOk={() => onOk} onCancel={onCancel} footer={null}>
+    <Modal title="Add Collection" open={open} onCancel={onCancel} footer={null}>
       <CollectionsForm onSubmit={onOk} />
     </Modal>
   );
