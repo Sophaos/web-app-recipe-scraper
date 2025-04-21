@@ -9,11 +9,7 @@ export const getCollections = async (): Promise<Collection[]> => {
       getCollections {
         id
         name
-        image
-        rating
-        url
-        ingredientsCount
-        totalTime
+        description
       }
     }
   `;
@@ -52,7 +48,7 @@ export const createCollection = async (data: CreateCollectionRequest): Promise<C
   return createCollection;
 };
 
-export const UpdateCollection = async (data: UpdateCollectionRequest): Promise<Collection> => {
+export const updateCollection = async (data: UpdateCollectionRequest): Promise<Collection> => {
   const mutation = gql`
     mutation updateCollection($data: UpdateCollectionDto!) {
       updateCollection(data: $data) {

@@ -1,20 +1,19 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { addRecipe, deleteRecipe, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
-import { CreateCollectionRequest } from "../api/collection-requests";
-import { createCollection } from "../api/collection-api";
+import { CreateCollectionRequest, DeleteCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
+import { createCollection, deleteCollection, getCollection, getCollections, updateCollection } from "../api/collection-api";
 
-export const useCollectionsQuery = (searchTerm: string): UseQueryResult<Recipe[]> => {
+export const useCollectionsQuery = (): UseQueryResult<Recipe[]> => {
   return useQuery({
-    queryKey: ["collections", searchTerm],
-    queryFn: () => getRecipes(searchTerm),
+    queryKey: ["collections"],
+    queryFn: () => getCollections(),
   });
 };
 
 export const useCollectionQuery = (id: string): UseQueryResult<Recipe> => {
   return useQuery({
     queryKey: ["collection", id],
-    queryFn: () => getRecipe(id),
+    queryFn: () => getCollection({ id }),
     enabled: !!id,
   });
 };
@@ -34,7 +33,7 @@ export const useCreateCollection = () => {
 export const useUpdateCollection = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: addRecipe,
+    mutationFn: (data: UpdateCollectionRequest) => updateCollection(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["recipes"],
@@ -46,7 +45,7 @@ export const useUpdateCollection = () => {
 export const useDeleteCollection = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteRecipe,
+    mutationFn: (data: DeleteCollectionRequest) => deleteCollection(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["collections"],
