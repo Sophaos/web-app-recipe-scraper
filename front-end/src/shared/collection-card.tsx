@@ -1,11 +1,10 @@
-interface CollectionsOverviewCardProps {
-  title: string;
-  recipeCount: number;
-  imageUrl: string;
-  //   onClick?: () => void;
+interface CollectionCardProps {
+  name?: string;
+  recipeCount?: number;
+  imageUrl?: string;
 }
 
-export const CollectionsOverviewCard = () => {
+export const CollectionCard = ({ name = "All Recipes", recipeCount, imageUrl }: CollectionCardProps) => {
   return (
     <div className="flex w-44 h-20 rounded-lg p-2 gap-2 border shadow-sm bg-white hover:shadow-md transition-shadow cursor-pointer">
       <img src={"https://www.thecountrycook.net/wp-content/uploads/2015/05/Slow-Cooker-Meatballs-and-Gravy.jpg"} alt={"test"} className="w-16 h-full object-cover rounded-md" />

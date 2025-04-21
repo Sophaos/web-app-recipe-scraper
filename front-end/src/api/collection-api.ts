@@ -3,10 +3,10 @@ import { Collection } from "../models/collection";
 import { client } from "./api-const";
 import { AddToCollectionRequest, CreateCollectionRequest, DeleteCollectionRequest, GetCollectionRequest, UpdateCollectionRequest } from "./collection-requests";
 
-export const getCollections = async (): Promise<Collection[]> => {
+export const getCollections = async (searchTerm: string): Promise<Collection[]> => {
   const query = gql`
-    query {
-      getCollections {
+    query ($search: String!) {
+      collections: getCollections(search: $search) {
         id
         name
         description
@@ -14,8 +14,10 @@ export const getCollections = async (): Promise<Collection[]> => {
     }
   `;
 
-  const { getCollections } = await client.request<{ getCollections: Collection[] }>(query);
-  return getCollections;
+  const variables = { search: searchTerm };
+
+  const { collections } = await client.request<{ collections: Collection[] }>(query, variables);
+  return collections;
 };
 
 export const getCollection = async (data: GetCollectionRequest): Promise<Collection> => {
@@ -83,6 +85,7 @@ export const deleteCollection = async (data: DeleteCollectionRequest): Promise<C
     mutation deleteCollection($data: DeleteCollectionDto!) {
       deleteCollection(data: $data) {
         id
+        name
       }
     }
   `;

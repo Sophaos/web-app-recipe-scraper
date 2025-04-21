@@ -1,18 +1,16 @@
-import { Alert } from "antd";
 import { useRecipesQuery } from "../hooks/recipe-query-hook";
-import { RecipeCard } from "./recipe-card";
-import { useAtomValue } from "jotai";
-import { searchTermAtom } from "../store/search-atom";
-import { SearchBar } from "./search-bar";
 import { AddRecipeCard } from "./add-recipe-card";
+import { RecipeCard } from "./recipe-card";
+import { Alert } from "antd";
 
-export const RecipesList = () => {
-  const searchTerm = useAtomValue(searchTermAtom);
+interface RecipesListProps {
+  searchTerm: string;
+}
+
+export const RecipesList = ({ searchTerm }: RecipesListProps) => {
   const { data: recipes } = useRecipesQuery(searchTerm);
   return (
-    <div className="flex flex-col gap-3">
-      <div className="text-2xl font-semibold">Recipes</div>
-      <SearchBar />
+    <>
       {recipes && recipes?.length > 0 ? (
         <div className="flex flex-wrap gap-3">
           <AddRecipeCard />
@@ -26,6 +24,6 @@ export const RecipesList = () => {
           <AddRecipeCard />
         </>
       )}
-    </div>
+    </>
   );
 };

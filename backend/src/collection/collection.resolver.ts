@@ -18,8 +18,10 @@ export class CollectionResolver {
   }
 
   @Query(() => [CollectionDTO])
-  async getCollections(): Promise<CollectionDTO[]> {
-    return this.collectionService.findAll();
+  async getCollections(
+    @Args('search', { nullable: true }) search?: string,
+  ): Promise<CollectionDTO[]> {
+    return this.collectionService.findAll(search);
   }
 
   @Query(() => CollectionDTO)

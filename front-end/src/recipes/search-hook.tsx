@@ -1,15 +1,15 @@
-import { useSetAtom } from "jotai";
-import { searchTermAtom } from "../store/search-atom";
 import { useDebouncedCallback } from "use-debounce";
+import { useState } from "react";
 
 const DEBOUNCE_TIME = 500; //
 
 export const useSearchHook = () => {
-  const setSearchTerm = useSetAtom(searchTermAtom);
-  const debouncedSetSearchTerm = useDebouncedCallback((value) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSetSearchTerm = useDebouncedCallback((value: string) => {
     setSearchTerm(value);
   }, DEBOUNCE_TIME);
   return {
     debouncedSetSearchTerm,
+    searchTerm,
   };
 };

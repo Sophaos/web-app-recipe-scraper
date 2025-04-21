@@ -1,3 +1,4 @@
 import { atom } from "jotai";
 
-export const searchTermAtom = atom("");
+export const searchRecipeTermAtom = atom("");
+export const searchCollectionTermAtom = atom("");

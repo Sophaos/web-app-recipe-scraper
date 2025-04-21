@@ -1,12 +1,14 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
-import { useSearchHook } from "./search-hook";
+import { DebouncedState } from "use-debounce";
 
-export const SearchBar = () => {
-  const { debouncedSetSearchTerm } = useSearchHook();
+interface SearchBarProps {
+  setSearchTerm: DebouncedState<(value: string) => void>;
+}
+export const SearchBar = ({ setSearchTerm }: SearchBarProps) => {
   return (
-    <div>
-      <Input size="large" placeholder="Type to search your recipe" prefix={<SearchOutlined />} onChange={(e) => debouncedSetSearchTerm(e.target.value)} />
-    </div>
+    <>
+      <Input size="large" placeholder="Type to search your recipe" prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
+    </>
   );
 };

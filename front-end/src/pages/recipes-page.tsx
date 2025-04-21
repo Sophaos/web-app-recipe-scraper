@@ -1,16 +1,16 @@
 import { CollectionModal } from "../modals/collection-modal";
 import { AddRecipeModal } from "../modals/add-recipe-modal";
-import { CollectionsOverview } from "../recipes/collections-overview";
+import { CollectionsView } from "../recipes/collections-view";
 import { RecipesHeader } from "../recipes/recipes-header";
 import { RecipesLayout } from "../recipes/recipes-layout";
-import { RecipesList } from "../recipes/recipes-list";
+import { RecipesView } from "../recipes/recipes-view";
 
 export const RecipesPage = () => {
   return (
     <RecipesLayout>
       <RecipesHeader />
-      <CollectionsOverview />
-      <RecipesList />
+      <CollectionsView />
+      <RecipesView />
       <AddRecipeModal />
       <CollectionModal />
     </RecipesLayout>

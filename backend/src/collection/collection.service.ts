@@ -57,9 +57,10 @@ export class CollectionService {
     return toCollectionDTO(updatedCollection);
   }
 
-  async findAll(): Promise<CollectionDTO[]> {
+  async findAll(search?: string): Promise<CollectionDTO[]> {
+    const filter = search ? { name: { $regex: search, $options: 'i' } } : {};
     const collections = await this.collectionModel
-      .find()
+      .find(filter)
       .sort({ _id: -1 })
       .populate('recipes')
       .exec();
