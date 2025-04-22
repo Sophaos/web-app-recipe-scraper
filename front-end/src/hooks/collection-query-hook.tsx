@@ -35,10 +35,9 @@ export const useUpdateCollection = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UpdateCollectionRequest) => updateCollection(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["recipes"],
-      });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] });
+      queryClient.invalidateQueries({ queryKey: ["collection", variables.id] });
     },
   });
 };

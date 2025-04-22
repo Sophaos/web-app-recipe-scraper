@@ -12,9 +12,9 @@ import { enqueueSnackbar } from "notistack";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
-  const { mutateAsync, status } = useDeleteCollection();
   const collectionId = useAtomValue(selectedCollectionId);
   const openCollectionDrawer = useSetAtom(openedCollectionDrawer);
+  const { mutateAsync, status } = useDeleteCollection();
   const { data: collection } = useCollectionQuery(collectionId);
 
   const deleteCollection = async () => {

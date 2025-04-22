@@ -60,7 +60,7 @@ export const updateCollection = async (data: UpdateCollectionRequest): Promise<C
     }
   `;
 
-  const { updateCollection } = await client.request<{ updateCollection: Collection }>(mutation, data);
+  const { updateCollection } = await client.request<{ updateCollection: Collection }>(mutation, { data });
   return updateCollection;
 };
 

@@ -1,9 +1,10 @@
 import { Button, Form, FormProps, Input } from "antd";
-import { useCreateCollection } from "../hooks/collection-query-hook";
-import { CreateCollectionRequest } from "../api/collection-requests";
+import { useCreateCollection, useUpdateCollection } from "../hooks/collection-query-hook";
+import { CreateCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
 
 interface CollectionsFormProps {
+  collection?: Collection;
   onSubmit: (collection: Collection) => void;
 }
 
@@ -17,17 +18,25 @@ const DEFAULT_COLLECTION: Collection = {
   description: "",
 };
 
-export const CollectionsForm = ({ onSubmit }: CollectionsFormProps) => {
-  const { mutateAsync, status } = useCreateCollection();
+export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) => {
+  const isEditing = !!collection;
+  const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
+  const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
   const [form] = Form.useForm();
 
-  const handleSubmit = async (form: CollectionFormType) => {
+  const handleSubmit = async (formData: CollectionFormType) => {
     try {
-      const createCollectionRequest: CreateCollectionRequest = { ...form };
-
-      const res = await mutateAsync(createCollectionRequest);
-      if (res) {
-        onSubmit(res);
+      if (isEditing && collection?.id) {
+        const updateRequest: UpdateCollectionRequest = {
+          id: collection.id,
+          ...formData,
+        };
+        const res = await updateCollection(updateRequest);
+        if (res) onSubmit(res);
+      } else {
+        const createRequest: CreateCollectionRequest = { ...formData };
+        const res = await createCollection(createRequest);
+        if (res) onSubmit(res);
       }
     } catch (e) {
       console.error(e);
@@ -39,10 +48,10 @@ export const CollectionsForm = ({ onSubmit }: CollectionsFormProps) => {
     form.resetFields();
   };
 
-  const isProcessing = status === "pending";
+  const isProcessing = createStatus === "pending" || updateStatus === "pending";
 
   return (
-    <Form name="basic" form={form} initialValues={DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
+    <Form name="basic" form={form} initialValues={collection || DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
       <Form.Item label="Name" name="name" rules={[{ required: true, message: "A collection must have a name !" }]}>
         <Input placeholder="My collection" />
       </Form.Item>
