@@ -89,6 +89,6 @@ export const deleteCollection = async (data: DeleteCollectionRequest): Promise<C
     }
   `;
 
-  const { deleteCollection } = await client.request<{ deleteCollection: Collection }>(mutation, data);
+  const { deleteCollection } = await client.request<{ deleteCollection: Collection }>(mutation, { data });
   return deleteCollection;
 };

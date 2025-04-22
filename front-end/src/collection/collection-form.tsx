@@ -4,7 +4,7 @@ import { CreateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
 
 interface CollectionsFormProps {
-  onSubmit: (id: string) => void;
+  onSubmit: (collection: Collection) => void;
 }
 
 type CollectionFormType = {
@@ -26,8 +26,8 @@ export const CollectionsForm = ({ onSubmit }: CollectionsFormProps) => {
       const createCollectionRequest: CreateCollectionRequest = { ...form };
 
       const res = await mutateAsync(createCollectionRequest);
-      if (res.id) {
-        onSubmit(res.id);
+      if (res) {
+        onSubmit(res);
       }
     } catch (e) {
       console.error(e);

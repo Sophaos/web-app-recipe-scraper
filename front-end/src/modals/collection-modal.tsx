@@ -4,23 +4,18 @@ import { useAtom } from "jotai";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { openedCollectionModalAtom } from "../store/modal-atom";
 import { CollectionsForm } from "../collection/collection-form";
+import { Collection } from "../models/collection";
 
 export const CollectionModal = () => {
   const [open, setOpen] = useAtom(openedCollectionModalAtom);
-  const navigate = useNavigate();
 
-  const goToCollection = (id: string) => {
-    navigate(`/recipe/${id}`);
-  };
-
-  const onOk = (id: string) => {
+  const onOk = (collection: Collection) => {
     setOpen(false);
-    enqueueSnackbar("A collection has been added.", {
+    enqueueSnackbar(`The collection "${collection.name}" has been added.`, {
       variant: "success",
       action: (key) => (
         <Button
           onClick={() => {
-            goToCollection(id);
             closeSnackbar(key);
           }}
         >
