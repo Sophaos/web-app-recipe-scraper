@@ -26,8 +26,7 @@ export const getCollection = async (data: GetCollectionRequest): Promise<Collect
       getCollection(id: $id) {
         id
         name
-        ingredients
-        recipes
+        description
       }
     }
   `;

@@ -4,11 +4,12 @@ import { DebouncedState } from "use-debounce";
 
 interface SearchBarProps {
   setSearchTerm: DebouncedState<(value: string) => void>;
+  placeholder: string;
 }
-export const SearchBar = ({ setSearchTerm }: SearchBarProps) => {
+export const SearchBar = ({ setSearchTerm, placeholder }: SearchBarProps) => {
   return (
     <>
-      <Input size="large" placeholder="Type to search your recipe" prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
+      <Input size="large" placeholder={placeholder} prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
     </>
   );
 };

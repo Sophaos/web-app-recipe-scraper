@@ -8,7 +8,7 @@ export const CollectionsView = () => {
   return (
     <div className="flex flex-col gap-3">
       <div className="text-2xl font-semibold">Collections</div>
-      <SearchBar setSearchTerm={debouncedSetSearchTerm} />
+      <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your collection" />
       <CollectionsList searchTerm={searchTerm} />
     </div>
   );

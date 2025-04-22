@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack
 import { CreateCollectionRequest, DeleteCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { createCollection, deleteCollection, getCollection, getCollections, updateCollection } from "../api/collection-api";
 import { Collection } from "../models/collection";
+import { DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 
 export const useCollectionsQuery = (searchTerm: string): UseQueryResult<Collection[]> => {
   return useQuery({
@@ -14,7 +15,7 @@ export const useCollectionQuery = (id: string): UseQueryResult<Collection> => {
   return useQuery({
     queryKey: ["collection", id],
     queryFn: () => getCollection({ id }),
-    enabled: !!id,
+    enabled: id !== DEFAULT_COLLECTION_ID && !!id,
   });
 };
 
