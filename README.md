@@ -14,9 +14,11 @@ I was motivated to learn about Web Scraping using Playwright, GraphQL by using M
 ## Features
 
 - Upload a recipe from a url
-- View saved recipes
-- View a recipe
+- View saved recipe(s)
 - Filter a list of recipes
+- Get, create, update, delete a collection
+- View collection(s) and its recipes
+- Add recipe to a collection
 
 ## What I've learned
 

@@ -1,5 +1,4 @@
 import { Button, Modal } from "antd";
-import { useNavigate } from "react-router";
 import { useAtom } from "jotai";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { openedCollectionModalAtom } from "../store/modal-atom";

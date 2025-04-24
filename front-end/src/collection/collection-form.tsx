@@ -2,6 +2,7 @@ import { Button, Form, FormProps, Input } from "antd";
 import { useCreateCollection, useUpdateCollection } from "../hooks/collection-query-hook";
 import { CreateCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
+import { useEffect } from "react";
 
 interface CollectionsFormProps {
   collection?: Collection;
@@ -23,6 +24,10 @@ export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) 
   const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
   const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue(collection || DEFAULT_COLLECTION);
+  }, [collection, form]);
 
   const handleSubmit = async (formData: CollectionFormType) => {
     try {
