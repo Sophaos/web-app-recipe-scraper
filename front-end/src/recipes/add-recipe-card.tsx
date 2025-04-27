@@ -11,7 +11,7 @@ export const AddRecipeCard = () => {
   return (
     <div
       onClick={handleOpen}
-      className="flex flex-col w-68 min-h-90 rounded-lg overflow-hidden border-2 border-dashed border-blue-300 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-inner transition-transform duration-300 hover:scale-105 hover:shadow-xl cursor-pointer items-center justify-center text-center p-6"
+      className="flex flex-col w-68 min-h-90 rounded-lg overflow-hidden border-2 border-dashed border-blue-300 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-inner  cursor-pointer items-center justify-center text-center p-6"
     >
       <div className="flex flex-col items-center gap-3 text-blue-600">
         <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shadow-sm">

@@ -2,7 +2,7 @@ import { SearchBar } from "./search-bar";
 import { RecipesList } from "./recipes-list";
 import { useSearchHook } from "../hooks/search-hook";
 import { useCollectionQuery, useDeleteCollection } from "../hooks/collection-query-hook";
-import { selectedCollectionId } from "../store/selected-atom";
+import { selectedCollectionId, selectedDrawerCollectionId, selectedRecipesIds } from "../store/selected-atom";
 import { useAtomValue, useSetAtom } from "jotai";
 import { ALL_RECIPES_COLLECTION, DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 import { Button } from "antd";
@@ -14,6 +14,8 @@ export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
   const collectionId = useAtomValue(selectedCollectionId);
   const openCollectionDrawer = useSetAtom(openedCollectionDrawer);
+  const setSelectedDrawerCollectionId = useSetAtom(selectedDrawerCollectionId);
+  const selectedRecipes = useAtomValue(selectedRecipesIds);
   const { mutateAsync, status } = useDeleteCollection();
   const { data: collection } = useCollectionQuery(collectionId);
 
@@ -26,9 +28,11 @@ export const RecipesView = () => {
 
   const openDrawer = () => {
     openCollectionDrawer(true);
+    setSelectedDrawerCollectionId(collectionId);
   };
 
   const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? ALL_RECIPES_COLLECTION : collection;
+  const hasSelectedRecipes = selectedRecipes.length > 0;
 
   return (
     <div className="flex flex-col gap-3">
@@ -47,6 +51,27 @@ export const RecipesView = () => {
       </div>
       <div>{formattedCollection?.description}</div>
       <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your recipe" />
+      <div className="flex flex-row gap-2">
+        {hasSelectedRecipes && (
+          <>
+            <Button icon={<DeleteFilled />} variant="outlined">
+              Select All
+            </Button>
+            <Button icon={<DeleteFilled />} variant="outlined">
+              Clear Selection
+            </Button>
+            <Button icon={<DeleteFilled />} variant="outlined">
+              Add to a Collection
+            </Button>
+            <Button icon={<DeleteFilled />} variant="outlined">
+              Add to Collection Form
+            </Button>
+            <Button icon={<DeleteFilled />} variant="outlined" danger>
+              {`Delete ${selectedRecipes.length} recipe${hasSelectedRecipes ? "s" : ""}`}
+            </Button>
+          </>
+        )}
+      </div>
       <RecipesList searchTerm={searchTerm} />
     </div>
   );

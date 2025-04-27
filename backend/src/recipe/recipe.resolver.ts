@@ -4,6 +4,7 @@ import { RecipeService } from './recipe.service';
 import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { DeleteRecipeDto } from './dto/delete-recipe.dto';
+import { DeleteRecipesDto } from './dto/delete-recipes.dto';
 
 @Resolver(() => RecipeDTO)
 export class RecipeResolver {
@@ -37,5 +38,12 @@ export class RecipeResolver {
     @Args('data') deleteRecipeDto: DeleteRecipeDto,
   ): Promise<RecipeDTO> {
     return await this.recipeService.remove(deleteRecipeDto);
+  }
+
+  @Mutation(() => RecipeDTO)
+  async deleteRecipes(
+    @Args('data') deleteRecipesDto: DeleteRecipesDto,
+  ): Promise<RecipeDTO[]> {
+    return await this.recipeService.removeMany(deleteRecipesDto);
   }
 }

@@ -9,6 +9,7 @@ import {
 } from '@testcontainers/mongodb';
 import { RECIPES_DOCUMENT_MOCK } from 'src/recipe/mocks/recipes-document.mock';
 import { RECIPE_DTO_MOCK } from 'src/recipe/mocks/recipe.mock';
+import { DeleteRecipesDto } from './dto/delete-recipes.dto';
 
 describe('RecipeService', () => {
   jest.setTimeout(60000);
@@ -105,6 +106,40 @@ describe('RecipeService', () => {
       await expect(
         service.remove({ id: new mongoose.Types.ObjectId().toString() }),
       ).rejects.toThrow('not found');
+    });
+  });
+
+  describe('removeMany()', () => {
+    it('should delete multiple recipes and return the deleted recipes', async () => {
+      const docs = await recipeModel.insertMany(RECIPES_DOCUMENT_MOCK);
+
+      const idsToDelete = docs.slice(0, 2).map((doc) => doc._id.toString());
+      const deleteRecipesDto: DeleteRecipesDto = { ids: idsToDelete };
+      const deleted = await service.removeMany(deleteRecipesDto);
+
+      expect(deleted).toHaveLength(2);
+      expect(deleted[0].name).toBe(RECIPES_DOCUMENT_MOCK[0].name);
+      expect(deleted[1].name).toBe(RECIPES_DOCUMENT_MOCK[1].name);
+
+      const exists0 = await recipeModel.findById(idsToDelete[0]);
+      const exists1 = await recipeModel.findById(idsToDelete[1]);
+      expect(exists0).toBeNull();
+      expect(exists1).toBeNull();
+
+      const stillExists = await recipeModel.findById(docs[2]._id);
+      expect(stillExists).not.toBeNull();
+    });
+
+    it('should throw NotFoundException if no IDs are found', async () => {
+      const randomIds = [
+        new mongoose.Types.ObjectId().toString(),
+        new mongoose.Types.ObjectId().toString(),
+      ];
+      const deleteRecipesDto: DeleteRecipesDto = { ids: randomIds };
+
+      await expect(service.removeMany(deleteRecipesDto)).rejects.toThrow(
+        'No recipes found for the provided IDs',
+      );
     });
   });
 });

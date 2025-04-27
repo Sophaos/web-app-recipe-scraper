@@ -11,11 +11,11 @@ export const useCollectionsQuery = (searchTerm: string): UseQueryResult<Collecti
   });
 };
 
-export const useCollectionQuery = (id: string): UseQueryResult<Collection> => {
+export const useCollectionQuery = (id: string, enabled: boolean = true): UseQueryResult<Collection> => {
   return useQuery({
     queryKey: ["collection", id],
     queryFn: () => getCollection({ id }),
-    enabled: id !== DEFAULT_COLLECTION_ID && !!id,
+    enabled: enabled && id !== DEFAULT_COLLECTION_ID && !!id,
   });
 };
 

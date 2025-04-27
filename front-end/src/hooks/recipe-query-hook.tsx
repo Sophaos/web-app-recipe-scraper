@@ -40,3 +40,15 @@ export const useDeleteRecipe = () => {
     },
   });
 };
+
+export const useBatchDeleteRecipe = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteRecipe,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["recipes"],
+      });
+    },
+  });
+};

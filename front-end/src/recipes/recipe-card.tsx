@@ -1,7 +1,9 @@
 import { Recipe } from "../models/recipe";
-import { StarFilled } from "@ant-design/icons";
-import { RecipeContextMenu } from "./recipe-context-menu";
+import { EllipsisOutlined, StarFilled } from "@ant-design/icons";
 import { useRecipeNavigation } from "./recipe-navigation-hook";
+import { useAtom } from "jotai";
+import { selectedRecipesIds } from "../store/selected-atom";
+import { Checkbox } from "antd";
 
 interface RecipeProps {
   recipe: Recipe;
@@ -10,36 +12,46 @@ interface RecipeProps {
 export const RecipeCard = ({ recipe }: RecipeProps) => {
   const { id, ingredientsCount, totalTime, name, image, rating, url, ratingCount } = recipe;
   const { goToRecipe } = useRecipeNavigation(id);
+  const [selectedRecipeIds, setSelectedRecipeIds] = useAtom(selectedRecipesIds);
+
+  const isSelected = selectedRecipeIds.includes(recipe?.id);
+
+  const handleMenuClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log("Menu clicked for recipe:", id);
+  };
+
+  const toggleSelect = () => {
+    setSelectedRecipeIds((prev) => (prev.includes(recipe.id) ? prev.filter((id) => id !== recipe.id) : [...prev, recipe.id]));
+  };
 
   return (
-    <RecipeContextMenu recipe={recipe}>
-      <div
-        className="flex flex-col w-68 border-2 min-h-90 rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-        onClick={() => goToRecipe()}
-      >
-        <div className="relative min-h-70 border-b-2">
-          <img src={image} alt={name} className="w-full h-70 object-cover" />
-          <div className="absolute top-0 left-0 right-0 p-2 text-white bg-black/50">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-row gap-2">
-                <StarFilled />
-                {rating}
-              </div>
-              <div>({ratingCount === "undefined" ? "N/A" : `${ratingCount} users`})</div>
-            </div>
+    <div className={`relative w-68 rounded-xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 ${isSelected ? "ring-4 ring-blue-500" : ""}`}>
+      <div className="relative h-60 w-full">
+        <img src={recipe.image} alt={recipe.name} className="w-full h-full object-cover" />
+
+        {/* Top strip with rating and checkbox */}
+        <div className="absolute top-0 left-0 w-full bg-black/60 text-white px-3 py-2 flex items-center justify-between z-10">
+          <div className="flex items-center gap-1 text-sm">
+            <StarFilled className="text-yellow-400" />
+            <span>
+              {recipe.rating} {ratingCount === "undefined" ? "(N/A)" : `(${ratingCount} users)`}
+            </span>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 p-2 text-white bg-black/50 flex flex-row gap-2 ">
-            <div className="truncate text-ellipsis">{url}</div>
-          </div>
+          <Checkbox checked={isSelected} onChange={() => toggleSelect()} />
         </div>
-        <div className="flex flex-col justify-between border-2 p-2 min-h-20">
-          <div className="font-semibold truncate text-ellipsis">{name}</div>
-          <div className="flex flex-row justify-between">
-            <div> {ingredientsCount} ingredients</div>
-            <div> {totalTime} </div>
-          </div>
+
+        {/* URL label */}
+        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs px-3 py-1 truncate z-10">{recipe.url}</div>
+      </div>
+
+      <div className="p-4 flex flex-col justify-between h-28 cursor-pointer">
+        <div className="text-lg font-semibold line-clamp-2">{recipe.name}</div>
+        <div className="flex justify-between text-sm text-gray-700">
+          <div>{recipe.ingredientsCount} ingredients</div>
+          <div>{recipe.totalTime}</div>
         </div>
       </div>
-    </RecipeContextMenu>
+    </div>
   );
 };

@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
 import { toRecipeDTO } from './recipe.helper';
 import { DeleteRecipeDto } from './dto/delete-recipe.dto';
+import { DeleteRecipesDto } from './dto/delete-recipes.dto';
 
 @Injectable()
 export class RecipeService {
@@ -56,6 +57,19 @@ export class RecipeService {
       );
     }
     return toRecipeDTO(recipe);
+  }
+
+  async removeMany(deleteRecipesDto: DeleteRecipesDto): Promise<RecipeDTO[]> {
+    const { ids } = deleteRecipesDto;
+    const recipes = await this.recipeModel.find({ _id: { $in: ids } }).exec();
+
+    if (!recipes.length) {
+      throw new NotFoundException(`No recipes found for the provided IDs`);
+    }
+
+    await this.recipeModel.deleteMany({ _id: { $in: ids } }).exec();
+
+    return recipes.map(toRecipeDTO);
   }
 
   async findOneRaw(id: string): Promise<RecipeDocument> {

@@ -4,12 +4,12 @@ import { useAtom, useAtomValue } from "jotai";
 import { CollectionsForm } from "./collection-form";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { Collection } from "../models/collection";
-import { selectedCollectionId } from "../store/selected-atom";
+import { selectedCollectionId, selectedDrawerCollectionId } from "../store/selected-atom";
 import { useCollectionQuery } from "../hooks/collection-query-hook";
 
 export const CollectionDrawer = () => {
   const [open, setOpen] = useAtom(openedCollectionDrawer);
-  const collectionId = useAtomValue(selectedCollectionId);
+  const collectionId = useAtomValue(selectedDrawerCollectionId);
   const { data: collection } = useCollectionQuery(collectionId);
   const handleClose = () => {
     setOpen(false);
@@ -32,7 +32,7 @@ export const CollectionDrawer = () => {
   };
 
   return (
-    <Drawer title="Edit Collection" onClose={handleClose} open={open} mask={true}>
+    <Drawer title={`Edit Collection "${collection?.name}"`} onClose={handleClose} open={open} mask={false}>
       {collection && <CollectionsForm onSubmit={onOk} collection={collection} />}
     </Drawer>
   );
