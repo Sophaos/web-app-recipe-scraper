@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { addRecipe, deleteRecipe, getRecipe, getRecipes } from "../api/recipe-api";
+import { addRecipe, deleteRecipe, deleteRecipes, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
 
 export const useRecipesQuery = (searchTerm: string): UseQueryResult<Recipe[]> => {
@@ -41,10 +41,10 @@ export const useDeleteRecipe = () => {
   });
 };
 
-export const useBatchDeleteRecipe = () => {
+export const useDeleteRecipes = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: deleteRecipe,
+    mutationFn: deleteRecipes,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["recipes"],

@@ -75,3 +75,19 @@ export const deleteRecipe = async (id: string): Promise<Recipe> => {
   const { deleteRecipe } = await client.request<{ deleteRecipe: Recipe }>(mutation, variables);
   return deleteRecipe;
 };
+
+export const deleteRecipes = async (ids: string[]): Promise<Recipe[]> => {
+  const mutation = gql`
+    mutation deleteRecipes($data: DeleteRecipesDto!) {
+      deleteRecipes(data: $data) {
+        id
+        name
+      }
+    }
+  `;
+
+  const variables = { data: { ids } };
+
+  const { deleteRecipes: recipes } = await client.request<{ deleteRecipes: Recipe[] }>(mutation, variables);
+  return recipes;
+};

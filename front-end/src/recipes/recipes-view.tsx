@@ -3,25 +3,36 @@ import { RecipesList } from "./recipes-list";
 import { useSearchHook } from "../hooks/search-hook";
 import { useCollectionQuery, useDeleteCollection } from "../hooks/collection-query-hook";
 import { selectedCollectionId, selectedDrawerCollectionId, selectedRecipesIds } from "../store/selected-atom";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ALL_RECIPES_COLLECTION, DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 import { Button } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { openedCollectionDrawer } from "../store/drawer-atom";
 import { enqueueSnackbar } from "notistack";
+import { useDeleteRecipes } from "../hooks/recipe-query-hook";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
   const collectionId = useAtomValue(selectedCollectionId);
   const openCollectionDrawer = useSetAtom(openedCollectionDrawer);
   const setSelectedDrawerCollectionId = useSetAtom(selectedDrawerCollectionId);
-  const selectedRecipes = useAtomValue(selectedRecipesIds);
-  const { mutateAsync, status } = useDeleteCollection();
+  const [selectedRecipes, setSelectedRecipes] = useAtom(selectedRecipesIds);
+  const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
+  const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
+
   const { data: collection } = useCollectionQuery(collectionId);
 
   const deleteCollection = async () => {
-    const recipe = await mutateAsync({ id: collectionId });
+    const recipe = await deleteCollectionAsync({ id: collectionId });
     enqueueSnackbar(`The collection "${recipe.name}" has been succesfully deleted.`, {
+      variant: "success",
+    });
+  };
+
+  const deleteRecipes = async () => {
+    const recipes = await deleteRecipesAsync(selectedRecipes);
+    setSelectedRecipes([]);
+    enqueueSnackbar(`${recipes.length} recipes have been succesfully deleted.`, {
       variant: "success",
     });
   };
@@ -66,7 +77,7 @@ export const RecipesView = () => {
             <Button icon={<DeleteFilled />} variant="outlined">
               Add to Collection Form
             </Button>
-            <Button icon={<DeleteFilled />} variant="outlined" danger>
+            <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteRecipes()}>
               {`Delete ${selectedRecipes.length} recipe${hasSelectedRecipes ? "s" : ""}`}
             </Button>
           </>
