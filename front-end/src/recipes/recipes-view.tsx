@@ -2,21 +2,18 @@ import { SearchBar } from "./search-bar";
 import { RecipesList } from "./recipes-list";
 import { useSearchHook } from "../hooks/search-hook";
 import { useCollectionQuery, useDeleteCollection } from "../hooks/collection-query-hook";
-import { selectedCollectionId, selectedDrawerCollectionId, selectedRecipesIds } from "../store/selected-atom";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ALL_RECIPES_COLLECTION, DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 import { Button } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
-import { openedCollectionDrawer } from "../store/drawer-atom";
 import { enqueueSnackbar } from "notistack";
 import { useDeleteRecipes } from "../hooks/recipe-query-hook";
+import { useSelectRecipes } from "../hooks/select-recipes-hook";
+import { useSelectCollection } from "../hooks/select-collection-hook";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
-  const collectionId = useAtomValue(selectedCollectionId);
-  const openCollectionDrawer = useSetAtom(openedCollectionDrawer);
-  const setSelectedDrawerCollectionId = useSetAtom(selectedDrawerCollectionId);
-  const [selectedRecipes, setSelectedRecipes] = useAtom(selectedRecipesIds);
+  const { id: collectionId, isDefaultCollection, openDrawer } = useSelectCollection();
+  const { ids, clearIds, hasAnyIds } = useSelectRecipes();
   const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
   const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
 
@@ -30,58 +27,48 @@ export const RecipesView = () => {
   };
 
   const deleteRecipes = async () => {
-    const recipes = await deleteRecipesAsync(selectedRecipes);
-    setSelectedRecipes([]);
+    const recipes = await deleteRecipesAsync(ids);
+    clearIds();
     enqueueSnackbar(`${recipes.length} recipes have been succesfully deleted.`, {
       variant: "success",
     });
   };
 
-  const openDrawer = () => {
-    openCollectionDrawer(true);
-    setSelectedDrawerCollectionId(collectionId);
+  const addToCollectionForm = () => {
+    clearIds();
   };
 
   const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? ALL_RECIPES_COLLECTION : collection;
-  const hasSelectedRecipes = selectedRecipes.length > 0;
-
+  const isProcessing = deleteStatus || deletesStatus;
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row justify-between">
         <div className="text-2xl font-semibold">{formattedCollection?.name}</div>
-        {collectionId !== DEFAULT_COLLECTION_ID && (
-          <div className="flex flex-row gap-2">
-            <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteCollection()}>
-              Delete Collection
-            </Button>
-            <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer}>
-              Edit Collection
-            </Button>
-          </div>
-        )}
+
+        <div className="flex flex-row gap-2">
+          <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteCollection()} disabled={isDefaultCollection}>
+            Delete Collection
+          </Button>
+          <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
+            Edit Collection
+          </Button>
+        </div>
       </div>
       <div>{formattedCollection?.description}</div>
       <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your recipe" />
       <div className="flex flex-row gap-2">
-        {hasSelectedRecipes && (
-          <>
-            <Button icon={<DeleteFilled />} variant="outlined">
-              Select All
-            </Button>
-            <Button icon={<DeleteFilled />} variant="outlined">
-              Clear Selection
-            </Button>
-            <Button icon={<DeleteFilled />} variant="outlined">
-              Add to a Collection
-            </Button>
-            <Button icon={<DeleteFilled />} variant="outlined">
-              Add to Collection Form
-            </Button>
-            <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteRecipes()}>
-              {`Delete ${selectedRecipes.length} recipe${hasSelectedRecipes ? "s" : ""}`}
-            </Button>
-          </>
-        )}
+        <Button icon={<DeleteFilled />} variant="outlined">
+          Select All
+        </Button>
+        <Button icon={<DeleteFilled />} variant="outlined" onClick={() => clearIds()} disabled={!hasAnyIds}>
+          Clear Selection
+        </Button>
+        <Button icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds}>
+          Add to Collection Form
+        </Button>
+        <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteRecipes()} disabled={!hasAnyIds}>
+          {`Delete ${ids.length} recipe${hasAnyIds ? "s" : ""}`}
+        </Button>
       </div>
       <RecipesList searchTerm={searchTerm} />
     </div>

@@ -1,8 +1,11 @@
-import { Button, Form, FormProps, Input } from "antd";
+import { Button, Form, FormProps, Input, Space, Typography } from "antd";
 import { useCreateCollection, useUpdateCollection } from "../hooks/collection-query-hook";
 import { CreateCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
 import { useEffect } from "react";
+import { Recipe } from "../models/recipe";
+import { MinusCircleOutlined } from "@ant-design/icons";
+import { useSelectCollection } from "../hooks/select-collection-hook";
 
 interface CollectionsFormProps {
   collection?: Collection;
@@ -12,17 +15,20 @@ interface CollectionsFormProps {
 type CollectionFormType = {
   name: string;
   description: string;
+  recipes: Recipe[];
 };
 
 const DEFAULT_COLLECTION: Collection = {
   name: "",
   description: "",
+  recipes: [],
 };
 
 export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) => {
   const isEditing = !!collection;
   const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
   const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
+  const { id, displayDefaultCollection, displayCurrentCollection, isDefaultCollection } = useSelectCollection();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -54,6 +60,7 @@ export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) 
   };
 
   const isProcessing = createStatus === "pending" || updateStatus === "pending";
+  const isActiveCollection = id === collection?.id;
 
   return (
     <Form name="basic" form={form} initialValues={collection || DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
@@ -63,6 +70,27 @@ export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) 
       <Form.Item label="Description" name="description">
         <Input placeholder="Dessert, mealprep, etc." />
       </Form.Item>
+      <Button variant="outlined" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
+        Display all recipes collection
+      </Button>
+      <Button variant="outlined" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
+        Display current collection
+      </Button>
+
+      <Form.List name="recipes">
+        {(fields, { remove }) => (
+          <>
+            {fields.map(({ key, name, ...restField }) => (
+              <Space key={key} style={{ display: "flex", marginBottom: 8 }} align="center">
+                <Form.Item {...restField} name={[name, "name"]} style={{ margin: 0 }}>
+                  <Typography.Text>{form.getFieldValue(["recipes", name, "name"])}</Typography.Text>
+                </Form.Item>
+                <MinusCircleOutlined onClick={() => remove(name)} />
+              </Space>
+            ))}
+          </>
+        )}
+      </Form.List>
       <Form.Item label={null}>
         <Button className="w-full" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
           Save

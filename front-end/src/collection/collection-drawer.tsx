@@ -1,22 +1,16 @@
 import { Button, Drawer } from "antd";
-import { openedCollectionDrawer } from "../store/drawer-atom";
-import { useAtom, useAtomValue } from "jotai";
 import { CollectionsForm } from "./collection-form";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { Collection } from "../models/collection";
-import { selectedCollectionId, selectedDrawerCollectionId } from "../store/selected-atom";
 import { useCollectionQuery } from "../hooks/collection-query-hook";
+import { useSelectCollection } from "../hooks/select-collection-hook";
 
 export const CollectionDrawer = () => {
-  const [open, setOpen] = useAtom(openedCollectionDrawer);
-  const collectionId = useAtomValue(selectedDrawerCollectionId);
+  const { drawerId: collectionId, drawerOpen, closeDrawer } = useSelectCollection();
   const { data: collection } = useCollectionQuery(collectionId);
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const onOk = (collection: Collection) => {
-    setOpen(false);
+    closeDrawer();
     enqueueSnackbar(`The collection "${collection.name}" has been updated.`, {
       variant: "success",
       action: (key) => (
@@ -32,7 +26,7 @@ export const CollectionDrawer = () => {
   };
 
   return (
-    <Drawer title={`Edit Collection "${collection?.name}"`} onClose={handleClose} open={open} mask={false}>
+    <Drawer title={`Edit Collection "${collection?.name}"`} onClose={() => closeDrawer()} open={drawerOpen} mask={false}>
       {collection && <CollectionsForm onSubmit={onOk} collection={collection} />}
     </Drawer>
   );
