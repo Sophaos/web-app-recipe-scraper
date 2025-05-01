@@ -19,18 +19,31 @@ export class CollectionService {
   ) {}
 
   async create(createCollection: CreateCollectionDto): Promise<CollectionDTO> {
-    const collectionToCreate = new this.collectionModel(createCollection);
+    const { recipeIds, ...rest } = createCollection;
+
+    const collectionToCreate = new this.collectionModel({
+      ...rest,
+      ...(recipeIds && { recipes: recipeIds }), // map recipeIds to recipes
+    });
     const createdCollection = await collectionToCreate.save();
-    return toCollectionDTO(createdCollection);
+    const populatedCollection = await createdCollection.populate('recipes');
+    return toCollectionDTO(populatedCollection);
   }
 
   async updateCollection(
     updateCollectionDto: UpdateCollectionDto,
   ): Promise<CollectionDTO> {
+    const { id, recipeIds, ...rest } = updateCollectionDto;
+
     const updatedCollection = await this.collectionModel
-      .findByIdAndUpdate(updateCollectionDto.id, updateCollectionDto, {
-        new: true,
-      })
+      .findByIdAndUpdate(
+        id,
+        {
+          ...rest,
+          ...(recipeIds && { recipes: recipeIds }), // Set recipes from recipeIds
+        },
+        { new: true },
+      )
       .populate('recipes');
 
     if (!updatedCollection) {

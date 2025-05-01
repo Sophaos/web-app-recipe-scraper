@@ -7,4 +7,7 @@ export class CreateCollectionDto {
 
   @Field({ nullable: true })
   description?: string;
+
+  @Field(() => [String], { nullable: 'itemsAndList' })
+  recipeIds?: string[];
 }
