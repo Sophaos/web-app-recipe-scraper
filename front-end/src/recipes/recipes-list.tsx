@@ -1,14 +1,13 @@
-import { useRecipesQuery } from "../hooks/recipe-query-hook";
+import { Recipe } from "../models/recipe";
 import { AddRecipeCard } from "./add-recipe-card";
 import { RecipeCard } from "./recipe-card";
 import { Alert } from "antd";
 
 interface RecipesListProps {
-  searchTerm: string;
+  recipes?: Recipe[];
 }
 
-export const RecipesList = ({ searchTerm }: RecipesListProps) => {
-  const { data: recipes } = useRecipesQuery(searchTerm);
+export const RecipesList = ({ recipes }: RecipesListProps) => {
   return (
     <>
       {recipes && recipes?.length > 0 ? (

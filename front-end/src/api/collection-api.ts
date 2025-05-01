@@ -10,6 +10,11 @@ export const getCollections = async (searchTerm: string): Promise<Collection[]> 
         id
         name
         description
+        recipes {
+          id
+          name
+          description
+        }
       }
     }
   `;
@@ -27,6 +32,11 @@ export const getCollection = async (data: GetCollectionRequest): Promise<Collect
         id
         name
         description
+        recipes {
+          id
+          name
+          description
+        }
       }
     }
   `;
@@ -41,6 +51,7 @@ export const createCollection = async (data: CreateCollectionRequest): Promise<C
         id
         name
         description
+        recipes
       }
     }
   `;
@@ -56,6 +67,7 @@ export const updateCollection = async (data: UpdateCollectionRequest): Promise<C
         id
         name
         description
+        recipes
       }
     }
   `;

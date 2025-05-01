@@ -2,14 +2,16 @@ import { Button, Form, FormProps, Input, Space, Typography } from "antd";
 import { useCreateCollection, useUpdateCollection } from "../hooks/collection-query-hook";
 import { CreateCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { Recipe } from "../models/recipe";
 import { MinusCircleOutlined } from "@ant-design/icons";
-import { useSelectCollection } from "../hooks/select-collection-hook";
+import { useAtom } from "jotai";
+import { savedRecipes } from "../store/selected-atom";
 
 interface CollectionsFormProps {
   collection?: Collection;
   onSubmit: (collection: Collection) => void;
+  children?: ReactNode;
 }
 
 type CollectionFormType = {
@@ -24,28 +26,46 @@ const DEFAULT_COLLECTION: Collection = {
   recipes: [],
 };
 
-export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) => {
+export const CollectionsForm = ({ onSubmit, collection, children }: CollectionsFormProps) => {
   const isEditing = !!collection;
   const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
   const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
-  const { id, displayDefaultCollection, displayCurrentCollection, isDefaultCollection } = useSelectCollection();
   const [form] = Form.useForm();
+  const [externalRecipes, setExternalRecipes] = useAtom(savedRecipes);
 
   useEffect(() => {
     form.setFieldsValue(collection || DEFAULT_COLLECTION);
   }, [collection, form]);
+
+  useEffect(() => {
+    if (externalRecipes.length > 0) {
+      const currentRecipes = (form.getFieldValue("recipes") as Recipe[]) || [];
+      const updated = [...currentRecipes, ...externalRecipes];
+      form.setFieldsValue({ recipes: updated });
+
+      // clear the external recipes after adding
+      setExternalRecipes([]);
+    }
+  }, [externalRecipes, form, setExternalRecipes]);
 
   const handleSubmit = async (formData: CollectionFormType) => {
     try {
       if (isEditing && collection?.id) {
         const updateRequest: UpdateCollectionRequest = {
           id: collection.id,
-          ...formData,
+          name: formData.name,
+          description: formData.description,
+          recipeIds: formData.recipes.map((r) => r.id),
         };
         const res = await updateCollection(updateRequest);
         if (res) onSubmit(res);
       } else {
-        const createRequest: CreateCollectionRequest = { ...formData };
+        const createRequest: CreateCollectionRequest = {
+          ...formData,
+          name: formData.name,
+          description: formData.description,
+          recipeIds: formData.recipes.map((r) => r.id),
+        };
         const res = await createCollection(createRequest);
         if (res) onSubmit(res);
       }
@@ -60,7 +80,6 @@ export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) 
   };
 
   const isProcessing = createStatus === "pending" || updateStatus === "pending";
-  const isActiveCollection = id === collection?.id;
 
   return (
     <Form name="basic" form={form} initialValues={collection || DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
@@ -70,13 +89,7 @@ export const CollectionsForm = ({ onSubmit, collection }: CollectionsFormProps) 
       <Form.Item label="Description" name="description">
         <Input placeholder="Dessert, mealprep, etc." />
       </Form.Item>
-      <Button variant="outlined" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
-        Display all recipes collection
-      </Button>
-      <Button variant="outlined" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
-        Display current collection
-      </Button>
-
+      <div>{children}</div>
       <Form.List name="recipes">
         {(fields, { remove }) => (
           <>

@@ -8,6 +8,7 @@ import { useSelectCollection } from "../hooks/select-collection-hook";
 export const CollectionDrawer = () => {
   const { drawerId: collectionId, drawerOpen, closeDrawer } = useSelectCollection();
   const { data: collection } = useCollectionQuery(collectionId);
+  const { id, displayDefaultCollection, displayCurrentCollection, isDefaultCollection } = useSelectCollection();
 
   const onOk = (collection: Collection) => {
     closeDrawer();
@@ -25,9 +26,20 @@ export const CollectionDrawer = () => {
     });
   };
 
+  const isActiveCollection = id === collection?.id;
+
   return (
     <Drawer title={`Edit Collection "${collection?.name}"`} onClose={() => closeDrawer()} open={drawerOpen} mask={false}>
-      {collection && <CollectionsForm onSubmit={onOk} collection={collection} />}
+      {collection && (
+        <CollectionsForm onSubmit={onOk} collection={collection}>
+          <Button variant="outlined" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
+            Display all recipes collection
+          </Button>
+          <Button variant="outlined" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
+            Display current collection
+          </Button>
+        </CollectionsForm>
+      )}
     </Drawer>
   );
 };

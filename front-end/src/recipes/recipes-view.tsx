@@ -6,14 +6,15 @@ import { ALL_RECIPES_COLLECTION, DEFAULT_COLLECTION_ID } from "../shared/collect
 import { Button } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { enqueueSnackbar } from "notistack";
-import { useDeleteRecipes } from "../hooks/recipe-query-hook";
+import { useDeleteRecipes, useRecipesQuery } from "../hooks/recipe-query-hook";
 import { useSelectRecipes } from "../hooks/select-recipes-hook";
 import { useSelectCollection } from "../hooks/select-collection-hook";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
-  const { id: collectionId, isDefaultCollection, openDrawer } = useSelectCollection();
-  const { ids, clearIds, hasAnyIds } = useSelectRecipes();
+  const { id: collectionId, isDefaultCollection, openDrawer, drawerOpen } = useSelectCollection();
+  const { ids, hasAnyIds, clearIds, addToSavedRecipes } = useSelectRecipes();
+  const { data: recipes } = useRecipesQuery(searchTerm);
   const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
   const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
 
@@ -35,7 +36,7 @@ export const RecipesView = () => {
   };
 
   const addToCollectionForm = () => {
-    clearIds();
+    addToSavedRecipes(recipes);
   };
 
   const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? ALL_RECIPES_COLLECTION : collection;
@@ -63,14 +64,14 @@ export const RecipesView = () => {
         <Button icon={<DeleteFilled />} variant="outlined" onClick={() => clearIds()} disabled={!hasAnyIds}>
           Clear Selection
         </Button>
-        <Button icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds}>
+        <Button icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds || !drawerOpen} onClick={() => addToCollectionForm()}>
           Add to Collection Form
         </Button>
         <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteRecipes()} disabled={!hasAnyIds}>
           {`Delete ${ids.length} recipe${hasAnyIds ? "s" : ""}`}
         </Button>
       </div>
-      <RecipesList searchTerm={searchTerm} />
+      <RecipesList recipes={recipes} />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 export interface CreateCollectionRequest {
   name: string;
   description?: string;
+  recipeIds?: string[];
 }
 
 export type UpdateCollectionRequest = CreateCollectionRequest & { id: string };
