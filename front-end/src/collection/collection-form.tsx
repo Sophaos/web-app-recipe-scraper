@@ -61,7 +61,6 @@ export const CollectionsForm = ({ onSubmit, collection, children }: CollectionsF
         if (res) onSubmit(res);
       } else {
         const createRequest: CreateCollectionRequest = {
-          ...formData,
           name: formData.name,
           description: formData.description,
           recipeIds: formData.recipes.map((r) => r.id),

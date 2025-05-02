@@ -51,7 +51,11 @@ export const createCollection = async (data: CreateCollectionRequest): Promise<C
         id
         name
         description
-        recipes
+        recipes {
+          id
+          name
+          description
+        }
       }
     }
   `;

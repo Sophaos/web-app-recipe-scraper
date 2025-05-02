@@ -9,6 +9,7 @@ import { enqueueSnackbar } from "notistack";
 import { useDeleteRecipes, useRecipesQuery } from "../hooks/recipe-query-hook";
 import { useSelectRecipes } from "../hooks/select-recipes-hook";
 import { useSelectCollection } from "../hooks/select-collection-hook";
+import { ConfirmButton } from "../shared/confirm-dialog";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
@@ -43,16 +44,18 @@ export const RecipesView = () => {
   const isProcessing = deleteStatus || deletesStatus;
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row gap-5">
         <div className="text-2xl font-semibold">{formattedCollection?.name}</div>
 
         <div className="flex flex-row gap-2">
-          <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteCollection()} disabled={isDefaultCollection}>
-            Delete Collection
-          </Button>
           <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
             Edit Collection
           </Button>
+          <ConfirmButton onConfirm={() => deleteCollection()}>
+            <Button icon={<DeleteFilled />} variant="outlined" danger disabled={isDefaultCollection}>
+              Delete Collection
+            </Button>
+          </ConfirmButton>
         </div>
       </div>
       <div>{formattedCollection?.description}</div>
@@ -67,9 +70,11 @@ export const RecipesView = () => {
         <Button icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds || !drawerOpen} onClick={() => addToCollectionForm()}>
           Add to Collection Form
         </Button>
-        <Button icon={<DeleteFilled />} variant="outlined" danger onClick={() => deleteRecipes()} disabled={!hasAnyIds}>
-          {`Delete ${ids.length} recipe${hasAnyIds ? "s" : ""}`}
-        </Button>
+        <ConfirmButton onConfirm={() => deleteRecipes()}>
+          <Button icon={<DeleteFilled />} variant="outlined" danger disabled={!hasAnyIds}>
+            {`Delete ${ids.length} recipe${hasAnyIds ? "s" : ""}`}
+          </Button>
+        </ConfirmButton>
       </div>
       <RecipesList recipes={recipes} />
     </div>
