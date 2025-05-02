@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { Collection } from "../models/collection";
 import { client } from "./api-const";
-import { AddToCollectionRequest, CreateCollectionRequest, DeleteCollectionRequest, GetCollectionRequest, UpdateCollectionRequest } from "./collection-requests";
+import { CreateCollectionRequest, DeleteCollectionRequest, GetCollectionRequest, UpdateCollectionRequest } from "./collection-requests";
 
 export const getCollections = async (searchTerm: string): Promise<Collection[]> => {
   const query = gql`
@@ -71,28 +71,17 @@ export const updateCollection = async (data: UpdateCollectionRequest): Promise<C
         id
         name
         description
-        recipes
+        recipes {
+          id
+          name
+          description
+        }
       }
     }
   `;
 
   const { updateCollection } = await client.request<{ updateCollection: Collection }>(mutation, { data });
   return updateCollection;
-};
-
-export const addToCollection = async (data: AddToCollectionRequest): Promise<Collection> => {
-  const mutation = gql`
-    mutation addToCollection($data: AddToCollectionDto!) {
-      addToCollection(data: $data) {
-        id
-        name
-        ingredientsCount
-      }
-    }
-  `;
-
-  const { addToCollection } = await client.request<{ addToCollection: Collection }>(mutation, data);
-  return addToCollection;
 };
 
 export const deleteCollection = async (data: DeleteCollectionRequest): Promise<Collection> => {

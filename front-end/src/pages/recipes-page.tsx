@@ -1,4 +1,3 @@
-import { CollectionModal } from "../modals/collection-modal";
 import { AddRecipeModal } from "../modals/add-recipe-modal";
 import { CollectionsView } from "../recipes/collections-view";
 import { RecipesHeader } from "../recipes/recipes-header";
@@ -14,7 +13,6 @@ export const RecipesPage = () => {
         <CollectionsView />
         <RecipesView />
         <AddRecipeModal />
-        <CollectionModal />
       </RecipesLayout>
       <CollectionDrawer />
     </>

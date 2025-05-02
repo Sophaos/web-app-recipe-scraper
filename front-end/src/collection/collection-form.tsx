@@ -1,6 +1,4 @@
 import { Button, Form, FormProps, Input, Space, Typography } from "antd";
-import { useCreateCollection, useUpdateCollection } from "../hooks/collection-query-hook";
-import { CreateCollectionRequest, UpdateCollectionRequest } from "../api/collection-requests";
 import { Collection } from "../models/collection";
 import { ReactNode, useEffect } from "react";
 import { Recipe } from "../models/recipe";
@@ -12,6 +10,7 @@ interface CollectionsFormProps {
   collection?: Collection;
   onSubmit: (collection: Collection) => void;
   children?: ReactNode;
+  isProcessing: boolean;
 }
 
 type CollectionFormType = {
@@ -26,10 +25,8 @@ const DEFAULT_COLLECTION: Collection = {
   recipes: [],
 };
 
-export const CollectionsForm = ({ onSubmit, collection, children }: CollectionsFormProps) => {
+export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }: CollectionsFormProps) => {
   const isEditing = !!collection;
-  const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
-  const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
   const [form] = Form.useForm();
   const [externalRecipes, setExternalRecipes] = useAtom(savedRecipes);
 
@@ -42,43 +39,24 @@ export const CollectionsForm = ({ onSubmit, collection, children }: CollectionsF
       const currentRecipes = (form.getFieldValue("recipes") as Recipe[]) || [];
       const updated = [...currentRecipes, ...externalRecipes];
       form.setFieldsValue({ recipes: updated });
-
-      // clear the external recipes after adding
       setExternalRecipes([]);
     }
   }, [externalRecipes, form, setExternalRecipes]);
 
   const handleSubmit = async (formData: CollectionFormType) => {
-    try {
-      if (isEditing && collection?.id) {
-        const updateRequest: UpdateCollectionRequest = {
-          id: collection.id,
-          name: formData.name,
-          description: formData.description,
-          recipeIds: formData.recipes.map((r) => r.id),
-        };
-        const res = await updateCollection(updateRequest);
-        if (res) onSubmit(res);
-      } else {
-        const createRequest: CreateCollectionRequest = {
-          name: formData.name,
-          description: formData.description,
-          recipeIds: formData.recipes.map((r) => r.id),
-        };
-        const res = await createCollection(createRequest);
-        if (res) onSubmit(res);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    const collectionData: Collection = {
+      ...(collection?.id && { id: collection.id }),
+      name: formData.name,
+      description: formData.description,
+      recipes: formData.recipes,
+    };
+    onSubmit(collectionData);
   };
 
   const onFinish: FormProps<CollectionFormType>["onFinish"] = (values) => {
     handleSubmit(values);
     form.resetFields();
   };
-
-  const isProcessing = createStatus === "pending" || updateStatus === "pending";
 
   return (
     <Form name="basic" form={form} initialValues={collection || DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
@@ -105,7 +83,7 @@ export const CollectionsForm = ({ onSubmit, collection, children }: CollectionsF
       </Form.List>
       <Form.Item label={null}>
         <Button className="w-full" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
-          Save
+          {isEditing ? "Save" : "Create"}
         </Button>
       </Form.Item>
     </Form>

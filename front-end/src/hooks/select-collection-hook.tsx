@@ -22,8 +22,14 @@ export const useSelectCollection = () => {
     setDrawerOpen(true);
   };
 
+  const openDefaultDrawer = () => {
+    setDrawerId(DEFAULT_COLLECTION_ID);
+    setDrawerOpen(true);
+  };
+
   const closeDrawer = () => {
     setDrawerOpen(false);
+    setDrawerId(DEFAULT_COLLECTION_ID);
   };
 
   const selectCollection = (collectionoId?: string) => {
@@ -40,5 +46,6 @@ export const useSelectCollection = () => {
     displayCurrentCollection,
     selectCollection,
     openDrawer,
+    openDefaultDrawer,
   };
 };
