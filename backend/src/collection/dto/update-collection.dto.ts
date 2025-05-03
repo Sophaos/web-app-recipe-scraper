@@ -12,5 +12,5 @@ export class UpdateCollectionDto {
   description?: string;
 
   @Field(() => [String], { nullable: 'itemsAndList' })
-  recipeIds?: string[];
+  recipeIds: string[];
 }

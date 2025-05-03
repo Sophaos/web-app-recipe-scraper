@@ -6,15 +6,12 @@ import {
   MongoDBContainer,
   StartedMongoDBContainer,
 } from '@testcontainers/mongodb';
-// import { ConflictException } from '@nestjs/common';
 import { CollectionService } from './collection.service';
-import { COLLECTION_DTO_MOCK } from './mocks/collection-dto.mock';
+import { CREATE_COLLECTION_DTO_MOCK } from './mocks/collection-dto.mock';
 import { COLLECTION_DAO_LIST_WITHOUT_ID_MOCK } from './mocks/collection-dao.mock';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { Recipe, RecipeSchema } from 'src/recipe/recipe.schema';
-import { RECIPES_DOCUMENT_MOCK } from 'src/recipe/mocks/recipes-document.mock';
 import { RecipeService } from 'src/recipe/recipe.service';
-import { AddToCollectionDto } from './dto/add-to-collection.dto';
 
 describe('CollectionService', () => {
   jest.setTimeout(60000);
@@ -68,15 +65,14 @@ describe('CollectionService', () => {
   describe('create()', () => {
     it('should create a collection', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id: _, ...collectionWithoutId } = COLLECTION_DTO_MOCK;
-      const created = await service.create(collectionWithoutId);
+      const created = await service.create(CREATE_COLLECTION_DTO_MOCK);
       expect(created).toBeDefined();
       expect(created.id).toBeDefined();
-      expect(created.name).toEqual(collectionWithoutId.name);
+      expect(created.name).toEqual(CREATE_COLLECTION_DTO_MOCK.name);
 
       const found = await collectionModel.findById(created.id).lean();
       expect(found).not.toBeNull();
-      expect(found?.name).toEqual(collectionWithoutId.name);
+      expect(found?.name).toEqual(CREATE_COLLECTION_DTO_MOCK.name);
     });
   });
 
@@ -117,6 +113,7 @@ describe('CollectionService', () => {
         id: idToUpdate,
         name: 'test',
         description: 'updated description',
+        recipeIds: [],
       };
 
       const found = await service.updateCollection(collectionDTO);
@@ -129,29 +126,11 @@ describe('CollectionService', () => {
         id: new mongoose.Types.ObjectId().toString(),
         name: 'test',
         description: 'updated description',
+        recipeIds: [],
       };
       await expect(service.updateCollection(collectionDTO)).rejects.toThrow(
         'not found',
       );
-    });
-  });
-
-  describe('addToCollection()', () => {
-    it('should return a collection with a new recipe inside it', async () => {
-      const insertedCollections = await collectionModel.insertMany(
-        COLLECTION_DAO_LIST_WITHOUT_ID_MOCK,
-      );
-      const insertedRecipes = await recipeModel.insertMany(
-        RECIPES_DOCUMENT_MOCK,
-      );
-
-      const collectionDTO: AddToCollectionDto = {
-        id: insertedCollections[0]._id.toString(),
-        recipeId: insertedRecipes[0]._id.toString(),
-      };
-
-      const found = await service.addToCollection(collectionDTO);
-      expect(found.recipes).toHaveLength(1);
     });
   });
 

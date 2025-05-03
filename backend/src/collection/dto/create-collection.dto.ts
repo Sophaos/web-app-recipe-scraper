@@ -9,5 +9,5 @@ export class CreateCollectionDto {
   description?: string;
 
   @Field(() => [String], { nullable: 'itemsAndList' })
-  recipeIds?: string[];
+  recipeIds: string[];
 }

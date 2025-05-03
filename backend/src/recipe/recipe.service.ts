@@ -20,6 +20,7 @@ export class RecipeService {
   async create(recipe: RecipeDTO): Promise<RecipeDTO> {
     const existingRecipe = await this.recipeModel
       .findOne({ url: recipe.url })
+      .lean()
       .exec();
 
     if (existingRecipe) {
@@ -37,6 +38,7 @@ export class RecipeService {
     const recipes = await this.recipeModel
       .find(filter)
       .sort({ _id: -1 })
+      .lean()
       .exec();
 
     return recipes.map((r) => toRecipeDTO(r));
@@ -50,6 +52,7 @@ export class RecipeService {
   async remove(deleteRecipeDto: DeleteRecipeDto): Promise<RecipeDTO> {
     const recipe = await this.recipeModel
       .findByIdAndDelete(deleteRecipeDto.id)
+      .lean()
       .exec();
     if (!recipe) {
       throw new NotFoundException(
@@ -61,22 +64,36 @@ export class RecipeService {
 
   async removeMany(deleteRecipesDto: DeleteRecipesDto): Promise<RecipeDTO[]> {
     const { ids } = deleteRecipesDto;
-    const recipes = await this.recipeModel.find({ _id: { $in: ids } }).exec();
+    const recipes = await this.recipeModel
+      .find({ _id: { $in: ids } })
+      .lean()
+      .exec();
 
     if (!recipes.length) {
       throw new NotFoundException(`No recipes found for the provided IDs`);
     }
 
-    await this.recipeModel.deleteMany({ _id: { $in: ids } }).exec();
+    await this.recipeModel
+      .deleteMany({ _id: { $in: ids } })
+      .lean()
+      .exec();
 
     return recipes.map(toRecipeDTO);
   }
 
-  async findOneRaw(id: string): Promise<RecipeDocument> {
-    const recipe = await this.recipeModel.findById(id).exec();
+  async findOneRaw(id: string): Promise<Recipe> {
+    const recipe = await this.recipeModel.findById(id).lean().exec();
     if (!recipe) {
       throw new NotFoundException(`Recipe with ID ${id} not found`);
     }
     return recipe;
+  }
+
+  async findManyRawByIds(ids: string[]): Promise<Recipe[]> {
+    if (ids.length === 0) return [];
+    return this.recipeModel
+      .find({ _id: { $in: ids } })
+      .lean()
+      .exec();
   }
 }

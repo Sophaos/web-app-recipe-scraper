@@ -7,7 +7,6 @@ import { DeleteCollectionDto } from './dto/delete-collection.dto';
 import { Collection, CollectionDocument } from './collection.schema';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
-import { AddToCollectionDto } from './dto/add-to-collection.dto';
 import { RecipeService } from 'src/recipe/recipe.service';
 
 @Injectable()
@@ -21,50 +20,31 @@ export class CollectionService {
   async create(createCollection: CreateCollectionDto): Promise<CollectionDTO> {
     const { recipeIds, ...rest } = createCollection;
 
+    const recipes = await this.recipeService.findManyRawByIds(recipeIds);
     const collectionToCreate = new this.collectionModel({
       ...rest,
-      ...(recipeIds && { recipes: recipeIds }), // map recipeIds to recipes
+      recipes,
     });
     const createdCollection = await collectionToCreate.save();
-    const populatedCollection = await createdCollection.populate('recipes');
-    return toCollectionDTO(populatedCollection);
+    return toCollectionDTO(createdCollection);
   }
 
   async updateCollection(
     updateCollectionDto: UpdateCollectionDto,
   ): Promise<CollectionDTO> {
     const { id, recipeIds, ...rest } = updateCollectionDto;
-
-    const updatedCollection = await this.collectionModel
-      .findByIdAndUpdate(
-        id,
-        {
-          ...rest,
-          ...(recipeIds && { recipes: recipeIds }), // Set recipes from recipeIds
-        },
-        { new: true },
-      )
-      .populate('recipes');
+    const recipes = await this.recipeService.findManyRawByIds(recipeIds);
+    const updatedCollection = await this.collectionModel.findByIdAndUpdate(
+      id,
+      {
+        ...rest,
+        ...(recipeIds && { recipes }), // Set recipes from recipeIds
+      },
+      { new: true },
+    );
 
     if (!updatedCollection) {
       throw new Error('Collection not found');
-    }
-
-    return toCollectionDTO(updatedCollection);
-  }
-
-  async addToCollection(
-    addToCollectionDto: AddToCollectionDto,
-  ): Promise<CollectionDTO> {
-    const { id, recipeId } = addToCollectionDto;
-
-    const recipe = await this.recipeService.findOneRaw(recipeId);
-    const updatedCollection = await this.collectionModel
-      .findByIdAndUpdate(id, { $push: { recipes: recipe._id } }, { new: true })
-      .populate('recipes');
-
-    if (!updatedCollection) {
-      throw new NotFoundException(`Collection with ID ${id} not found`);
     }
 
     return toCollectionDTO(updatedCollection);
@@ -75,17 +55,14 @@ export class CollectionService {
     const collections = await this.collectionModel
       .find(filter)
       .sort({ _id: -1 })
-      .populate('recipes')
+      .lean()
       .exec();
 
     return collections.map((r) => toCollectionDTO(r));
   }
 
   async findOne(id: string): Promise<CollectionDTO> {
-    const collection = await this.collectionModel
-      .findById(id)
-      .populate('recipes')
-      .exec();
+    const collection = await this.collectionModel.findById(id).lean().exec();
     if (!collection) {
       throw new NotFoundException(`Collection with ID ${id} not found`);
     }
@@ -97,7 +74,7 @@ export class CollectionService {
   ): Promise<CollectionDTO> {
     const collection = await this.collectionModel
       .findByIdAndDelete(deleteCollectionDto.id)
-      .populate('recipes')
+      .lean()
       .exec();
     if (!collection) {
       throw new NotFoundException(

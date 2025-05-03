@@ -1,8 +1,8 @@
 import { decodeHTML } from 'entities';
 import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
-import { RecipeDocument } from 'src/recipe/recipe.schema';
+import { Recipe } from 'src/recipe/recipe.schema';
 import { parseISO8601Duration } from 'src/utils/utils';
-export function toRecipeDTO(recipe: RecipeDocument): RecipeDTO {
+export function toRecipeDTO(recipe: Recipe): RecipeDTO {
   return {
     id: recipe._id.toString(),
     name: decodeHTML(recipe.name ?? ''),

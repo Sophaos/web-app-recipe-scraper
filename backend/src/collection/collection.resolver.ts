@@ -4,7 +4,6 @@ import { CreateCollectionDto } from './dto/create-collection.dto';
 import { DeleteCollectionDto } from './dto/delete-collection.dto';
 import { CollectionService } from './collection.service';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
-import { AddToCollectionDto } from './dto/add-to-collection.dto';
 
 @Resolver(() => CollectionDTO)
 export class CollectionResolver {
@@ -34,13 +33,6 @@ export class CollectionResolver {
     @Args('data') updateCollectionDto: UpdateCollectionDto,
   ): Promise<CollectionDTO> {
     return await this.collectionService.updateCollection(updateCollectionDto);
-  }
-
-  @Mutation(() => CollectionDTO)
-  async addToCollection(
-    @Args('data') addToCollectionDto: AddToCollectionDto,
-  ): Promise<CollectionDTO> {
-    return await this.collectionService.addToCollection(addToCollectionDto);
   }
 
   @Mutation(() => CollectionDTO)

@@ -13,5 +13,5 @@ export class CollectionDTO {
   description?: string;
 
   @Field(() => [RecipeDTO], { nullable: 'itemsAndList' })
-  recipes?: RecipeDTO[];
+  recipes: RecipeDTO[];
 }
