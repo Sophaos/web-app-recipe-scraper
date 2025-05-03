@@ -6,9 +6,8 @@ import { useCollectionQuery, useCreateCollection, useUpdateCollection } from "..
 import { useSelectCollection } from "../hooks/select-collection-hook";
 
 export const CollectionDrawer = () => {
-  const { drawerId: collectionId, drawerOpen, closeDrawer } = useSelectCollection();
+  const { drawerId: collectionId, id, isDefaultCollection, drawerOpen, displayDefaultCollection, displayCurrentCollection, closeDrawer } = useSelectCollection();
   const { data: collection } = useCollectionQuery(collectionId);
-  const { id, displayDefaultCollection, displayCurrentCollection, isDefaultCollection } = useSelectCollection();
 
   const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
   const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();

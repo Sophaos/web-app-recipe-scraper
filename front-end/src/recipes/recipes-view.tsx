@@ -15,11 +15,11 @@ export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
   const { id: collectionId, isDefaultCollection, openDrawer, drawerOpen } = useSelectCollection();
   const { ids, hasAnyIds, clearIds, addToSavedRecipes } = useSelectRecipes();
-  const { data: recipes } = useRecipesQuery(searchTerm);
+  console.log(isDefaultCollection);
+  const { data: recipes } = useRecipesQuery(searchTerm, isDefaultCollection);
   const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
   const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
-
-  const { data: collection } = useCollectionQuery(collectionId);
+  const { data: collection } = useCollectionQuery(collectionId, !isDefaultCollection);
 
   const deleteCollection = async () => {
     const recipe = await deleteCollectionAsync({ id: collectionId });
@@ -29,9 +29,9 @@ export const RecipesView = () => {
   };
 
   const deleteRecipes = async () => {
-    const recipes = await deleteRecipesAsync(ids);
+    const res = await deleteRecipesAsync(ids);
     clearIds();
-    enqueueSnackbar(`${recipes.length} recipes have been succesfully deleted.`, {
+    enqueueSnackbar(`${res.length} recipes have been succesfully deleted.`, {
       variant: "success",
     });
   };
@@ -40,6 +40,7 @@ export const RecipesView = () => {
     addToSavedRecipes(recipes);
   };
 
+  const formattedRecipes = isDefaultCollection ? recipes : collection?.recipes;
   const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? ALL_RECIPES_COLLECTION : collection;
   const isProcessing = deleteStatus || deletesStatus;
   return (
@@ -76,7 +77,7 @@ export const RecipesView = () => {
           </Button>
         </ConfirmButton>
       </div>
-      <RecipesList recipes={recipes} />
+      <RecipesList recipes={formattedRecipes} />
     </div>
   );
 };

@@ -34,8 +34,13 @@ export const getCollection = async (data: GetCollectionRequest): Promise<Collect
         description
         recipes {
           id
+          ingredientsCount
+          totalTime
           name
-          description
+          image
+          rating
+          url
+          ratingCount
         }
       }
     }
