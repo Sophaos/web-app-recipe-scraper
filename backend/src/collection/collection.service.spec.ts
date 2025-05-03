@@ -64,7 +64,6 @@ describe('CollectionService', () => {
 
   describe('create()', () => {
     it('should create a collection', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const created = await service.create(CREATE_COLLECTION_DTO_MOCK);
       expect(created).toBeDefined();
       expect(created.id).toBeDefined();
