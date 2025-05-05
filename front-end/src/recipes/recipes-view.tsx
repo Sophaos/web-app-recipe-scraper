@@ -2,7 +2,7 @@ import { SearchBar } from "./search-bar";
 import { RecipesList } from "./recipes-list";
 import { useSearchHook } from "../hooks/search-hook";
 import { useCollectionQuery, useDeleteCollection } from "../hooks/collection-query-hook";
-import { ALL_RECIPES_COLLECTION, DEFAULT_COLLECTION_ID } from "../shared/collection-const";
+import { DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 import { Button } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { enqueueSnackbar } from "notistack";
@@ -14,14 +14,17 @@ import { ConfirmButton } from "../shared/confirm-dialog";
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
   const { id: collectionId, isDefaultCollection, openDrawer, drawerOpen } = useSelectCollection();
-  const { ids, hasAnyIds, clearIds, addToSavedRecipes } = useSelectRecipes();
-  const { data: recipes } = useRecipesQuery(searchTerm, isDefaultCollection);
+  const { ids, hasAnyIds, clearIds, addToSavedRecipes, selectAll } = useSelectRecipes();
+  const { data: defaultCollection } = useRecipesQuery(searchTerm, isDefaultCollection);
   const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
   const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
   const { data: collection } = useCollectionQuery(collectionId, !isDefaultCollection);
 
-  const formattedRecipes = isDefaultCollection ? recipes : collection?.recipes;
+  const recipes = defaultCollection?.recipes ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const partialDefaultCollection = defaultCollection ? (({ recipes: _, ...rest }) => rest)(defaultCollection) : undefined;
 
+  const formattedRecipes = isDefaultCollection ? recipes : collection?.recipes?.filter((recipe) => recipe.name.toLowerCase().includes(searchTerm.toLowerCase()));
   const deleteCollection = async () => {
     const recipe = await deleteCollectionAsync({ id: collectionId });
     enqueueSnackbar(`The collection "${recipe.name}" has been succesfully deleted.`, {
@@ -42,7 +45,7 @@ export const RecipesView = () => {
     addToSavedRecipes(collectionsToAdd);
   };
 
-  const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? ALL_RECIPES_COLLECTION : collection;
+  const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? partialDefaultCollection : collection;
   const isProcessing = deleteStatus || deletesStatus;
   return (
     <div className="flex flex-col gap-3">
@@ -63,7 +66,7 @@ export const RecipesView = () => {
       <div>{formattedCollection?.description}</div>
       <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your recipe" />
       <div className="flex flex-row gap-2">
-        <Button icon={<DeleteFilled />} variant="outlined">
+        <Button icon={<DeleteFilled />} variant="outlined" onClick={() => selectAll(formattedRecipes)}>
           Select All
         </Button>
         <Button icon={<DeleteFilled />} variant="outlined" onClick={() => clearIds()} disabled={!hasAnyIds}>

@@ -2,26 +2,23 @@ import { gql } from "graphql-request";
 import { Collection } from "../models/collection";
 import { client } from "./api-const";
 import { CreateCollectionRequest, DeleteCollectionRequest, GetCollectionRequest, UpdateCollectionRequest } from "./collection-requests";
+import { PartialCollection } from "../models/partial-collection";
 
-export const getCollections = async (searchTerm: string): Promise<Collection[]> => {
+export const getCollections = async (searchTerm: string): Promise<PartialCollection[]> => {
   const query = gql`
     query ($search: String!) {
       collections: getCollections(search: $search) {
         id
         name
-        description
-        recipes {
-          id
-          name
-          description
-        }
+        recipeCount
+        previewImage
       }
     }
   `;
 
   const variables = { search: searchTerm };
 
-  const { collections } = await client.request<{ collections: Collection[] }>(query, variables);
+  const { collections } = await client.request<{ collections: PartialCollection[] }>(query, variables);
   return collections;
 };
 

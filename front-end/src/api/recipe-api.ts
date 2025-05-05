@@ -1,28 +1,35 @@
 import { GraphQLClient, gql } from "graphql-request";
 import { Recipe } from "../models/recipe";
+import { DefaultCollection } from "../models/default-collection";
 
 const client = new GraphQLClient("http://localhost:3000/graphql");
 
-export const getRecipes = async (searchTerm: string): Promise<Recipe[]> => {
+export const getRecipes = async (searchTerm: string): Promise<DefaultCollection> => {
   const query = gql`
     query ($search: String!) {
-      recipes: getRecipes(search: $search) {
+      defaultCollection: getRecipes(search: $search) {
         id
-        ingredientsCount
-        totalTime
         name
-        image
-        rating
-        url
-        ratingCount
+        description
+        recipeCount
+        recipes {
+          id
+          ingredientsCount
+          totalTime
+          name
+          image
+          rating
+          url
+          ratingCount
+        }
       }
     }
   `;
 
   const variables = { search: searchTerm };
 
-  const { recipes } = await client.request<{ recipes: Recipe[] }>(query, variables);
-  return recipes;
+  const { defaultCollection } = await client.request<{ defaultCollection: DefaultCollection }>(query, variables);
+  return defaultCollection;
 };
 
 export const getRecipe = async (id: string): Promise<Recipe> => {

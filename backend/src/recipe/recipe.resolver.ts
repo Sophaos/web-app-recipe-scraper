@@ -5,6 +5,7 @@ import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { DeleteRecipeDto } from './dto/delete-recipe.dto';
 import { DeleteRecipesDto } from './dto/delete-recipes.dto';
+import { DefaultCollectionDTO } from 'src/collection/dto/default-collection.dto';
 
 @Resolver(() => RecipeDTO)
 export class RecipeResolver {
@@ -21,10 +22,10 @@ export class RecipeResolver {
     return await this.recipeService.create(recipe);
   }
 
-  @Query(() => [RecipeDTO])
+  @Query(() => DefaultCollectionDTO)
   async getRecipes(
     @Args('search', { nullable: true }) search?: string,
-  ): Promise<RecipeDTO[]> {
+  ): Promise<DefaultCollectionDTO> {
     return this.recipeService.findAll(search);
   }
 

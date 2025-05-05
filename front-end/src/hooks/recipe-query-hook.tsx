@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { addRecipe, deleteRecipe, deleteRecipes, getRecipe, getRecipes } from "../api/recipe-api";
 import { Recipe } from "../models/recipe";
+import { DefaultCollection } from "../models/default-collection";
 
-export const useRecipesQuery = (searchTerm: string, enabled: boolean = true): UseQueryResult<Recipe[]> => {
+export const useRecipesQuery = (searchTerm: string, enabled: boolean = true): UseQueryResult<DefaultCollection> => {
   return useQuery({
     queryKey: ["recipes", searchTerm],
     queryFn: () => getRecipes(searchTerm),

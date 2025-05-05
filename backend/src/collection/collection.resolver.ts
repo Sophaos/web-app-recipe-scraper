@@ -4,6 +4,7 @@ import { CreateCollectionDto } from './dto/create-collection.dto';
 import { DeleteCollectionDto } from './dto/delete-collection.dto';
 import { CollectionService } from './collection.service';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
+import { PartialCollectionDTO } from './dto/partial-collection.dto';
 
 @Resolver(() => CollectionDTO)
 export class CollectionResolver {
@@ -16,10 +17,10 @@ export class CollectionResolver {
     return await this.collectionService.create(createCollectionDto);
   }
 
-  @Query(() => [CollectionDTO])
+  @Query(() => [PartialCollectionDTO])
   async getCollections(
     @Args('search', { nullable: true }) search?: string,
-  ): Promise<CollectionDTO[]> {
+  ): Promise<PartialCollectionDTO[]> {
     return this.collectionService.findAll(search);
   }
 

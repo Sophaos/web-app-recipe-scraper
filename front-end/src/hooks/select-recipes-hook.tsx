@@ -16,6 +16,10 @@ export const useSelectRecipes = () => {
     setIds([]);
   };
 
+  const selectAll = (items?: Recipe[]) => {
+    setIds(items?.map((i) => i.id) ?? []);
+  };
+
   const addToSavedRecipes = (items?: Recipe[]) => {
     if (items === undefined) return;
     setRecipes((prev) => {
@@ -34,5 +38,6 @@ export const useSelectRecipes = () => {
     addToSavedRecipes,
     clearIds,
     toggleSelect,
+    selectAll,
   };
 };

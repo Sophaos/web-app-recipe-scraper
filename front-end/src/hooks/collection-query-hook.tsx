@@ -3,8 +3,9 @@ import { CreateCollectionRequest, DeleteCollectionRequest, UpdateCollectionReque
 import { createCollection, deleteCollection, getCollection, getCollections, updateCollection } from "../api/collection-api";
 import { Collection } from "../models/collection";
 import { DEFAULT_COLLECTION_ID } from "../shared/collection-const";
+import { PartialCollection } from "../models/partial-collection";
 
-export const useCollectionsQuery = (searchTerm: string): UseQueryResult<Collection[]> => {
+export const useCollectionsQuery = (searchTerm: string): UseQueryResult<PartialCollection[]> => {
   return useQuery({
     queryKey: ["collections", searchTerm],
     queryFn: () => getCollections(searchTerm),

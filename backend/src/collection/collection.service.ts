@@ -8,6 +8,9 @@ import { Collection, CollectionDocument } from './collection.schema';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { RecipeService } from 'src/recipe/recipe.service';
+import { CollectionAggregate } from './aggregations/collection-aggregate';
+import { PartialCollectionDTO } from './dto/partial-collection.dto';
+import { toPartialCollectionDTO } from 'src/mapper/collection-mapper';
 
 @Injectable()
 export class CollectionService {
@@ -50,15 +53,31 @@ export class CollectionService {
     return toCollectionDTO(updatedCollection);
   }
 
-  async findAll(search?: string): Promise<CollectionDTO[]> {
-    const filter = search ? { name: { $regex: search, $options: 'i' } } : {};
-    const collections = await this.collectionModel
-      .find(filter)
-      .sort({ _id: -1 })
-      .lean()
-      .exec();
+  async findAll(search?: string): Promise<PartialCollectionDTO[]> {
+    const matchStage = search
+      ? { name: { $regex: search, $options: 'i' } }
+      : {};
 
-    return collections.map((r) => toCollectionDTO(r));
+    const collections =
+      await this.collectionModel.aggregate<CollectionAggregate>([
+        { $match: matchStage },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            recipeCount: { $size: '$recipes' },
+            previewImage: {
+              $arrayElemAt: [
+                { $arrayElemAt: ['$recipes.images', 0] }, // This won't work directly
+                0,
+              ],
+            },
+          },
+        },
+        { $sort: { _id: -1 } },
+      ]);
+
+    return collections.map((c) => toPartialCollectionDTO(c));
   }
 
   async findOne(id: string): Promise<CollectionDTO> {

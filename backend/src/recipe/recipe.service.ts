@@ -10,6 +10,7 @@ import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
 import { toRecipeDTO } from './recipe.helper';
 import { DeleteRecipeDto } from './dto/delete-recipe.dto';
 import { DeleteRecipesDto } from './dto/delete-recipes.dto';
+import { DefaultCollectionDTO } from 'src/collection/dto/default-collection.dto';
 
 @Injectable()
 export class RecipeService {
@@ -33,7 +34,7 @@ export class RecipeService {
     return toRecipeDTO(createdRecipe);
   }
 
-  async findAll(search?: string): Promise<RecipeDTO[]> {
+  async findAll(search?: string): Promise<DefaultCollectionDTO> {
     const filter = search ? { name: { $regex: search, $options: 'i' } } : {};
     const recipes = await this.recipeModel
       .find(filter)
@@ -41,7 +42,14 @@ export class RecipeService {
       .lean()
       .exec();
 
-    return recipes.map((r) => toRecipeDTO(r));
+    const totalCount = await this.recipeModel.estimatedDocumentCount();
+    return {
+      id: 'all-recipes',
+      name: 'All Recipes',
+      description: 'A collection of every recipes. (default collection)',
+      recipeCount: totalCount,
+      recipes: recipes.map((r) => toRecipeDTO(r)),
+    };
   }
 
   async findOne(id: string): Promise<RecipeDTO> {
