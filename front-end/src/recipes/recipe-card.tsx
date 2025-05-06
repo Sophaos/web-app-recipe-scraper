@@ -9,8 +9,7 @@ interface RecipeProps {
 }
 
 export const RecipeCard = ({ recipe }: RecipeProps) => {
-  const { id, ingredientsCount, totalTime, name, image, rating, url, ratingCount } = recipe;
-  const { goToRecipe } = useRecipeNavigation(id);
+  const { goToRecipe } = useRecipeNavigation(recipe.id);
   const { ids, toggleSelect } = useSelectRecipes();
 
   const isSelected = ids.includes(recipe?.id);
@@ -23,7 +22,7 @@ export const RecipeCard = ({ recipe }: RecipeProps) => {
           <div className="flex items-center gap-1 text-sm">
             <StarFilled className="text-yellow-400" />
             <span>
-              {recipe.rating} {ratingCount === "undefined" ? "(N/A)" : `(${ratingCount} users)`}
+              {recipe.rating} {recipe.ratingCount === "undefined" ? "(N/A)" : `(${recipe.ratingCount} users)`}
             </span>
           </div>
           <Checkbox checked={isSelected} onChange={() => toggleSelect(recipe.id)} />
@@ -31,7 +30,7 @@ export const RecipeCard = ({ recipe }: RecipeProps) => {
         <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs px-3 py-1 truncate z-10">{recipe.url}</div>
       </div>
 
-      <div className="p-4 flex flex-col justify-between h-28 cursor-pointer">
+      <div className="p-4 flex flex-col justify-between h-28 cursor-pointer" onClick={() => goToRecipe()}>
         <div className="text-lg font-semibold line-clamp-2">{recipe.name}</div>
         <div className="flex justify-between text-sm text-gray-700">
           <div>{recipe.ingredientsCount} ingredients</div>

@@ -51,17 +51,16 @@ export const RecipesView = () => {
     <div className="flex flex-col gap-3">
       <div className="flex flex-row gap-5">
         <div className="text-2xl font-semibold">{formattedCollection?.name}</div>
-
-        <div className="flex flex-row gap-2">
-          <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
-            Edit Collection
+      </div>
+      <div className="flex flex-row gap-2">
+        <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
+          Edit Collection
+        </Button>
+        <ConfirmButton onConfirm={() => deleteCollection()}>
+          <Button icon={<DeleteFilled />} variant="outlined" danger disabled={isDefaultCollection}>
+            Delete Collection
           </Button>
-          <ConfirmButton onConfirm={() => deleteCollection()}>
-            <Button icon={<DeleteFilled />} variant="outlined" danger disabled={isDefaultCollection}>
-              Delete Collection
-            </Button>
-          </ConfirmButton>
-        </div>
+        </ConfirmButton>
       </div>
       <div>{formattedCollection?.description}</div>
       <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your recipe" />

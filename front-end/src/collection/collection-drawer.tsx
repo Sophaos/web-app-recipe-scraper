@@ -8,7 +8,6 @@ import { useSelectCollection } from "../hooks/select-collection-hook";
 export const CollectionDrawer = () => {
   const { drawerId: collectionId, id, isDefaultCollection, drawerOpen, displayDefaultCollection, displayCurrentCollection, closeDrawer } = useSelectCollection();
   const { data: collection } = useCollectionQuery(collectionId);
-
   const { mutateAsync: createCollection, status: createStatus } = useCreateCollection();
   const { mutateAsync: updateCollection, status: updateStatus } = useUpdateCollection();
 
@@ -47,14 +46,16 @@ export const CollectionDrawer = () => {
   const isProcessing = createStatus === "pending" || updateStatus === "pending";
   const title = collection?.id ? `Edit Collection "${collection?.name}"` : `Create Collection`;
   return (
-    <Drawer title={title} onClose={() => closeDrawer()} open={drawerOpen} mask={false}>
+    <Drawer title={title} onClose={() => closeDrawer()} open={drawerOpen} mask={false} width={600}>
       <CollectionsForm onSubmit={handleCollectionSubmit} collection={collection} isProcessing={isProcessing}>
-        <Button variant="outlined" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
-          Display all recipes collection
-        </Button>
-        <Button variant="outlined" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
-          Display current collection
-        </Button>
+        <div className="flex flex-row gap-1">
+          <Button color="default" variant="filled" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
+            Display default collection
+          </Button>
+          <Button color="default" variant="filled" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
+            Display current collection
+          </Button>
+        </div>
       </CollectionsForm>
     </Drawer>
   );

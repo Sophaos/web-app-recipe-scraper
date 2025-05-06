@@ -37,8 +37,11 @@ export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }
   useEffect(() => {
     if (externalRecipes.length > 0) {
       const currentRecipes = (form.getFieldValue("recipes") as Recipe[]) || [];
-      const updated = [...currentRecipes, ...externalRecipes];
-      form.setFieldsValue({ recipes: updated });
+      const combined = [...currentRecipes, ...externalRecipes];
+
+      const uniqueById = combined.filter((recipe, index, self) => index === self.findIndex((r) => r.id === recipe.id));
+
+      form.setFieldsValue({ recipes: uniqueById });
       setExternalRecipes([]);
     }
   }, [externalRecipes, form, setExternalRecipes]);
@@ -66,12 +69,16 @@ export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }
       <Form.Item label="Description" name="description">
         <Input placeholder="Dessert, mealprep, etc." />
       </Form.Item>
-      <div>{children}</div>
+
+      <div className="flex flex-row justify-between">
+        <Typography.Text>Recipes</Typography.Text>
+        <div>{children}</div>
+      </div>
       <Form.List name="recipes">
         {(fields, { remove }) => (
           <>
             {fields.map(({ key, name, ...restField }) => (
-              <Space key={key} style={{ display: "flex", marginBottom: 8 }} align="center">
+              <Space key={key} style={{ display: "flex", marginBottom: 8, marginLeft: 8 }} align="center">
                 <Form.Item {...restField} name={[name, "name"]} style={{ margin: 0 }}>
                   <Typography.Text>{form.getFieldValue(["recipes", name, "name"])}</Typography.Text>
                 </Form.Item>
