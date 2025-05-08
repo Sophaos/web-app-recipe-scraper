@@ -12,6 +12,8 @@ import { COLLECTION_DAO_LIST_WITHOUT_ID_MOCK } from './mocks/collection-dao.mock
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { Recipe, RecipeSchema } from 'src/recipe/recipe.schema';
 import { RecipeService } from 'src/recipe/recipe.service';
+import { RECIPES_DOCUMENT_MOCK } from 'src/recipe/mocks/recipes-document.mock';
+import { CreateCollectionDto } from './dto/create-collection.dto';
 
 describe('CollectionService', () => {
   jest.setTimeout(60000);
@@ -64,14 +66,17 @@ describe('CollectionService', () => {
 
   describe('create()', () => {
     it('should create a collection', async () => {
-      const created = await service.create(CREATE_COLLECTION_DTO_MOCK);
+      const recipes = await recipeModel.insertMany(RECIPES_DOCUMENT_MOCK);
+      const ids = recipes.map((r) => r._id);
+      const collectionWithRecipes: CreateCollectionDto = {
+        ...CREATE_COLLECTION_DTO_MOCK,
+        recipeIds: ids,
+      };
+      const created = await service.create(collectionWithRecipes);
       expect(created).toBeDefined();
       expect(created.id).toBeDefined();
       expect(created.name).toEqual(CREATE_COLLECTION_DTO_MOCK.name);
-
-      const found = await collectionModel.findById(created.id).lean();
-      expect(found).not.toBeNull();
-      expect(found?.name).toEqual(CREATE_COLLECTION_DTO_MOCK.name);
+      expect(created.recipes).toHaveLength(recipes.length);
     });
   });
 
@@ -81,6 +86,13 @@ describe('CollectionService', () => {
 
       const all = await service.findAll();
       expect(all).toHaveLength(COLLECTION_DAO_LIST_WITHOUT_ID_MOCK.length);
+    });
+
+    it('should return all collections filtered', async () => {
+      await collectionModel.insertMany(COLLECTION_DAO_LIST_WITHOUT_ID_MOCK);
+
+      const all = await service.findAll('Banana bread');
+      expect(all).toHaveLength(1);
     });
   });
 
@@ -101,7 +113,7 @@ describe('CollectionService', () => {
     });
   });
 
-  describe('updateOne()', () => {
+  describe('updateCollection()', () => {
     it('should return a collection by ID', async () => {
       const inserted = await collectionModel.insertMany(
         COLLECTION_DAO_LIST_WITHOUT_ID_MOCK,

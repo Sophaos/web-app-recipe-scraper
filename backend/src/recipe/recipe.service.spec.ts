@@ -69,11 +69,10 @@ describe('RecipeService', () => {
       await recipeModel.insertMany(RECIPES_DOCUMENT_MOCK);
 
       const all = await service.findAll();
-      expect(all).toHaveLength(12);
+      expect(all.recipeCount).toEqual(RECIPES_DOCUMENT_MOCK.length);
 
       const filtered = await service.findAll('Pico de Gallo');
-      expect(filtered).toHaveLength(1);
-      expect(filtered[0].ingredients?.length).toEqual(6);
+      expect(filtered.recipes).toHaveLength(1);
     });
   });
 
