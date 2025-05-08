@@ -89,7 +89,7 @@ export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }
         )}
       </Form.List>
       <Form.Item label={null}>
-        <Button className="w-full" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
+        <Button className="w-full mt-5" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
           {isEditing ? "Save" : "Create"}
         </Button>
       </Form.Item>

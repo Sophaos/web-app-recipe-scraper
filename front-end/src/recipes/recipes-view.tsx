@@ -1,7 +1,7 @@
 import { SearchBar } from "./search-bar";
 import { RecipesList } from "./recipes-list";
 import { useSearchHook } from "../hooks/search-hook";
-import { useCollectionQuery, useDeleteCollection } from "../hooks/collection-query-hook";
+import { useCollectionQuery, useDeleteCollection, useUpdateCollection } from "../hooks/collection-query-hook";
 import { DEFAULT_COLLECTION_ID } from "../shared/collection-const";
 import { Button } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
@@ -10,6 +10,7 @@ import { useDeleteRecipes, useRecipesQuery } from "../hooks/recipe-query-hook";
 import { useSelectRecipes } from "../hooks/select-recipes-hook";
 import { useSelectCollection } from "../hooks/select-collection-hook";
 import { ConfirmButton } from "../shared/confirm-dialog";
+import { UpdateCollectionRequest } from "../api/collection-requests";
 
 export const RecipesView = () => {
   const { searchTerm, debouncedSetSearchTerm } = useSearchHook();
@@ -18,6 +19,8 @@ export const RecipesView = () => {
   const { data: defaultCollection } = useRecipesQuery(searchTerm, isDefaultCollection);
   const { mutateAsync: deleteCollectionAsync } = useDeleteCollection();
   const { mutateAsync: deleteRecipesAsync } = useDeleteRecipes();
+  const { mutateAsync: updateCollectionAsync } = useUpdateCollection();
+
   const { data: collection } = useCollectionQuery(collectionId, !isDefaultCollection);
 
   const recipes = defaultCollection?.recipes ?? [];
@@ -33,11 +36,24 @@ export const RecipesView = () => {
   };
 
   const deleteRecipes = async () => {
-    const res = await deleteRecipesAsync(ids);
+    if (isDefaultCollection) {
+      const res = await deleteRecipesAsync(ids);
+      enqueueSnackbar(`${res.length} recipes have been succesfully deleted.`, {
+        variant: "success",
+      });
+    } else if (collection?.id) {
+      const request: UpdateCollectionRequest = {
+        id: collection.id,
+        name: collection.name ?? "",
+        description: collection.description,
+        recipeIds: collection.recipes.filter((r) => ids.some((i) => i !== r.id)).map((x) => x.id) ?? [],
+      };
+      const res = await updateCollectionAsync(request);
+      enqueueSnackbar(`Collection '${res.name}' has been succesfully updated.`, {
+        variant: "success",
+      });
+    }
     clearIds();
-    enqueueSnackbar(`${res.length} recipes have been succesfully deleted.`, {
-      variant: "success",
-    });
   };
 
   const addToCollectionForm = () => {
