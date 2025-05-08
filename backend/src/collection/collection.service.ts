@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CollectionDTO } from 'src/collection/dto/collection.dto';
-import { toCollectionDTO } from './collection.helper';
 import { DeleteCollectionDto } from './dto/delete-collection.dto';
 import { Collection, CollectionDocument } from './collection.schema';
 import { CreateCollectionDto } from './dto/create-collection.dto';
@@ -10,7 +9,10 @@ import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { RecipeService } from 'src/recipe/recipe.service';
 import { CollectionAggregate } from './aggregations/collection-aggregate';
 import { PartialCollectionDTO } from './dto/partial-collection.dto';
-import { toPartialCollectionDTO } from 'src/mapper/collection-mapper';
+import {
+  toCollectionDTO,
+  toPartialCollectionDTO,
+} from 'src/mapper/collection-mapper';
 
 @Injectable()
 export class CollectionService {

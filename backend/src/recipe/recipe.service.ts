@@ -7,10 +7,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Recipe, RecipeDocument } from 'src/recipe/recipe.schema';
 import { Model } from 'mongoose';
 import { RecipeDTO } from 'src/recipe/dto/recipe.dto';
-import { toRecipeDTO } from './recipe.helper';
 import { DeleteRecipeDto } from './dto/delete-recipe.dto';
 import { DeleteRecipesDto } from './dto/delete-recipes.dto';
 import { DefaultCollectionDTO } from 'src/collection/dto/default-collection.dto';
+import { toRecipeDTO } from 'src/mapper/recipe-mapper';
 
 @Injectable()
 export class RecipeService {

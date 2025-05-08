@@ -16,8 +16,8 @@ export const RecipesView = () => {
   const { id: collectionId, isDefaultCollection, openDrawer, drawerOpen } = useSelectCollection();
   const { ids, hasAnyIds, clearIds, addToSavedRecipes, selectAll } = useSelectRecipes();
   const { data: defaultCollection } = useRecipesQuery(searchTerm, isDefaultCollection);
-  const { mutateAsync: deleteCollectionAsync, status: deleteStatus } = useDeleteCollection();
-  const { mutateAsync: deleteRecipesAsync, status: deletesStatus } = useDeleteRecipes();
+  const { mutateAsync: deleteCollectionAsync } = useDeleteCollection();
+  const { mutateAsync: deleteRecipesAsync } = useDeleteRecipes();
   const { data: collection } = useCollectionQuery(collectionId, !isDefaultCollection);
 
   const recipes = defaultCollection?.recipes ?? [];
@@ -46,7 +46,6 @@ export const RecipesView = () => {
   };
 
   const formattedCollection = collectionId === DEFAULT_COLLECTION_ID ? partialDefaultCollection : collection;
-  const isProcessing = deleteStatus || deletesStatus;
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-row gap-5">
