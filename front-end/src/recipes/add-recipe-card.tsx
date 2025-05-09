@@ -10,6 +10,7 @@ export const AddRecipeCard = () => {
 
   return (
     <div
+      data-testid="add-recipe-clickable"
       onClick={handleOpen}
       className="flex flex-col w-68 min-h-90 rounded-lg overflow-hidden border-2 border-dashed border-blue-300 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-inner  cursor-pointer items-center justify-center text-center p-6"
     >

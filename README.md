@@ -9,7 +9,11 @@ A web app for scraping and saving recipes in the web.
 
 ## Motivation
 
-I was motivated to learn about Web Scraping using Playwright, GraphQL by using MongoDB, Jotai as a state management library and Playwright/Jest for testing.
+- Learn about Web Scraping using Playwright
+- Learn GraphQL by using MongoDB,
+- Learn to use Jotai as a state management library
+- Learn Playwright for e2e tests
+- Practice Jest for testing.
 
 ## Features
 

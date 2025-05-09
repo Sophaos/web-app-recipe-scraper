@@ -20,6 +20,7 @@ export const CollectionCard = ({ collection }: CollectionCardProps) => {
 
   return (
     <div
+      data-testid="collection-card-item"
       className={`flex w-44 h-20 rounded-lg p-2 gap-2 border shadow-sm bg-white hover:shadow-md transition-shadow cursor-pointer 
     ${isSelected ? "border-blue-700 shadow-md" : "border-gray-200"}`}
       onClick={() => handleSelectCollection()}

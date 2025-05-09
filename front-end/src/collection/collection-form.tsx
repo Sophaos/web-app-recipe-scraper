@@ -64,10 +64,10 @@ export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }
   return (
     <Form name="basic" form={form} initialValues={collection || DEFAULT_COLLECTION} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
       <Form.Item label="Name" name="name" rules={[{ required: true, message: "A collection must have a name !" }]}>
-        <Input placeholder="My collection" />
+        <Input data-testid="collection-name-input" placeholder="My collection" />
       </Form.Item>
       <Form.Item label="Description" name="description">
-        <Input placeholder="Dessert, mealprep, etc." />
+        <Input data-testid="collection-description-input" placeholder="Dessert, mealprep, etc." />
       </Form.Item>
 
       <div className="flex flex-row justify-between">
@@ -82,14 +82,14 @@ export const CollectionsForm = ({ onSubmit, collection, isProcessing, children }
                 <Form.Item {...restField} name={[name, "name"]} style={{ margin: 0 }}>
                   <Typography.Text>{form.getFieldValue(["recipes", name, "name"])}</Typography.Text>
                 </Form.Item>
-                <MinusCircleOutlined onClick={() => remove(name)} />
+                <MinusCircleOutlined data-testid="remove-recipe-form-button" onClick={() => remove(name)} />
               </Space>
             ))}
           </>
         )}
       </Form.List>
       <Form.Item label={null}>
-        <Button className="w-full mt-5" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
+        <Button data-testid="collection-submit-button" className="w-full mt-5" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
           {isEditing ? "Save" : "Create"}
         </Button>
       </Form.Item>

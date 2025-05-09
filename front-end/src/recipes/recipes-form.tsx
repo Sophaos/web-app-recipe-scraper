@@ -35,7 +35,7 @@ export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
   return (
     <Form name="basic" form={form} initialValues={{ url: "" }} onFinish={onFinish} autoComplete="off" layout="vertical" disabled={isProcessing}>
       <Form.Item label="Enter the URL of the recipe you want to save" name="url" rules={[{ required: true, message: "Please paste a url !" }]}>
-        <Input placeholder="http://" />
+        <Input data-testid="recipe-url-input" placeholder="http://" />
       </Form.Item>
       <p className="text-xs text-gray-500 mb-2">
         Only recipes that follow{" "}
@@ -54,7 +54,7 @@ export const RecipesForm = ({ onSubmit }: RecipesFormProps) => {
       )}
 
       <Form.Item label={null}>
-        <Button className="w-full" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
+        <Button data-testid="recipe-save-button" className="w-full" type="primary" shape="round" htmlType="submit" disabled={isProcessing} loading={isProcessing}>
           Save
         </Button>
       </Form.Item>

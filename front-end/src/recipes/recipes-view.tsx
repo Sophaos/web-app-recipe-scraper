@@ -68,11 +68,11 @@ export const RecipesView = () => {
         <div className="text-2xl font-semibold">{formattedCollection?.name}</div>
       </div>
       <div className="flex flex-row gap-2">
-        <Button icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
+        <Button data-testid="edit-collection-button" icon={<EditFilled />} variant="outlined" onClick={openDrawer} disabled={isDefaultCollection}>
           Edit Collection
         </Button>
         <ConfirmButton onConfirm={() => deleteCollection()}>
-          <Button icon={<DeleteFilled />} variant="outlined" danger disabled={isDefaultCollection}>
+          <Button data-testid="delete-collection-button" icon={<DeleteFilled />} variant="outlined" danger disabled={isDefaultCollection}>
             Delete Collection
           </Button>
         </ConfirmButton>
@@ -80,17 +80,17 @@ export const RecipesView = () => {
       <div>{formattedCollection?.description}</div>
       <SearchBar setSearchTerm={debouncedSetSearchTerm} placeholder="Type to search your recipe" />
       <div className="flex flex-row gap-2">
-        <Button icon={<DeleteFilled />} variant="outlined" onClick={() => selectAll(formattedRecipes)}>
+        <Button data-testid="select-all-button" icon={<DeleteFilled />} variant="outlined" onClick={() => selectAll(formattedRecipes)}>
           Select All
         </Button>
-        <Button icon={<DeleteFilled />} variant="outlined" onClick={() => clearIds()} disabled={!hasAnyIds}>
+        <Button data-testid="clear-all-button" icon={<DeleteFilled />} variant="outlined" onClick={() => clearIds()} disabled={!hasAnyIds}>
           Clear Selection
         </Button>
-        <Button icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds || !drawerOpen} onClick={() => addToCollectionForm()}>
+        <Button data-testid="add-to-collection-form-button" icon={<DeleteFilled />} variant="outlined" disabled={!hasAnyIds || !drawerOpen} onClick={() => addToCollectionForm()}>
           Add to Collection Form
         </Button>
         <ConfirmButton onConfirm={() => deleteRecipes()}>
-          <Button icon={<DeleteFilled />} variant="outlined" danger disabled={!hasAnyIds}>
+          <Button data-testid="batch-delete-button" icon={<DeleteFilled />} variant="outlined" danger disabled={!hasAnyIds}>
             {`Delete ${ids.length} recipe${hasAnyIds ? "s" : ""}`}
           </Button>
         </ConfirmButton>

@@ -17,6 +17,7 @@ export const CollectionDrawer = () => {
       variant: "success",
       action: (key) => (
         <Button
+          data-testid=""
           onClick={() => {
             closeSnackbar(key);
           }}
@@ -49,10 +50,10 @@ export const CollectionDrawer = () => {
     <Drawer title={title} onClose={() => closeDrawer()} open={drawerOpen} mask={false} width={600}>
       <CollectionsForm onSubmit={handleCollectionSubmit} collection={collection} isProcessing={isProcessing}>
         <div className="flex flex-row gap-1">
-          <Button color="default" variant="filled" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
+          <Button data-testid="display-default-collection-button" color="default" variant="filled" onClick={() => displayDefaultCollection()} disabled={isDefaultCollection}>
             Display default collection
           </Button>
-          <Button color="default" variant="filled" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
+          <Button data-testid="display-current-collection-button" color="default" variant="filled" onClick={() => displayCurrentCollection(collection?.id)} disabled={isActiveCollection}>
             Display current collection
           </Button>
         </div>

@@ -9,7 +9,7 @@ interface SearchBarProps {
 export const SearchBar = ({ setSearchTerm, placeholder }: SearchBarProps) => {
   return (
     <>
-      <Input size="large" placeholder={placeholder} prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
+      <Input data-testid="search-bar-input" size="large" placeholder={placeholder} prefix={<SearchOutlined />} onChange={(e) => setSearchTerm(e.target.value)} />
     </>
   );
 };
