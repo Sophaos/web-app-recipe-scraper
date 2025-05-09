@@ -12,14 +12,13 @@ A web app for scraping and saving recipes in the web.
 - Learn about Web Scraping using Playwright
 - Learn GraphQL by using MongoDB,
 - Learn to use Jotai as a state management library
-- Learn Playwright for e2e tests
 - Practice Jest for testing.
 
 ## Features
 
 - Upload a recipe from a url
 - View saved recipe(s)
-- View collection(s) and its recipes
+- View collection(s) and its recipe(s)
 - Filter a list of recipes and collections
 - Get, create, update, delete a collection
 - Batch add, batch delete recipes
